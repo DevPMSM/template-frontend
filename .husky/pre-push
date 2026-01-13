@@ -1,0 +1,28 @@
+#!/bin/shtodo
+echo ""
+echo "########################################"
+echo "# 🚀 Buildando o projeto antes do push #"
+echo "########################################"
+echo ""
+
+echo "⏳ Iniciando build..."
+echo ""
+
+if ! pnpm build; then
+  echo ""
+  echo "#############################################"
+  echo "# ❌ Build falhou!                          #"
+  echo "# Corrija os erros antes de fazer o push.   #"
+  echo "#############################################"
+  echo ""
+  exit 1
+fi
+
+echo ""
+echo "###############################################"
+echo "# ✅ Build concluído com sucesso! 🎉          #"
+echo "# Seu push está a caminho... 🚀               #"
+echo "###############################################"
+echo ""
+
+exit 0
