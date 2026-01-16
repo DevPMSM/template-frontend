@@ -1,28 +1,44 @@
-#!/bin/shtodo
+#!/bin/sh
+
 echo ""
-echo "########################################"
-echo "# 🚀 Buildando o projeto antes do push #"
-echo "########################################"
+echo "=============================================="
+echo "🧹 Rodando formatação antes do push..."
+echo "=============================================="
 echo ""
 
-echo "⏳ Iniciando build..."
-echo ""
-
-if ! pnpm build; then
+if ! pnpm format; then
   echo ""
-  echo "#############################################"
-  echo "# ❌ Build falhou!                          #"
-  echo "# Corrija os erros antes de fazer o push.   #"
-  echo "#############################################"
+  echo "=============================================="
+  echo "❌ Formatação falhou!"
+  echo "👉 Corrija os erros antes de fazer o push."
+  echo "=============================================="
   echo ""
   exit 1
 fi
 
 echo ""
-echo "###############################################"
-echo "# ✅ Build concluído com sucesso! 🎉          #"
-echo "# Seu push está a caminho... 🚀               #"
-echo "###############################################"
+echo "=============================================="
+echo "🚀 Buildando o projeto antes do push..."
+echo "=============================================="
+echo ""
+echo "⏳ Iniciando build..."
+echo ""
+
+if ! pnpm build; then
+  echo ""
+  echo "=============================================="
+  echo "❌ Build falhou!"
+  echo "👉 Corrija os erros antes de fazer o push."
+  echo "=============================================="
+  echo ""
+  exit 1
+fi
+
+echo ""
+echo "=============================================="
+echo "✅ Build concluído com sucesso! 🎉"
+echo "🚀 Push liberado!"
+echo "=============================================="
 echo ""
 
 exit 0
