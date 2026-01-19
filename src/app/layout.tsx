@@ -14,7 +14,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: 'Template Frontend - Prefeitura',
-  description: 'Template de frontend para aplicações web da prefeitura municipal de São Mateus.',
+  description:
+    'Template de frontend para aplicações web da prefeitura municipal de São Mateus.',
 };
 
 export default function RootLayout({

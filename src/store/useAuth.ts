@@ -1,10 +1,10 @@
-import { useCallback, useState } from "react";
-import { useAuthStore } from "@/store/authStore";
-import { useRouter } from "next/navigation";
-import { AxiosError } from "axios";
-import baseApi, { authApi } from "@/services/api";
-import { AuthOptions, AuthResponse } from "@/types/auth";
-import { userType } from "@/types/user";
+import { useCallback, useState } from 'react';
+import { useAuthStore } from '@/store/authStore';
+import { useRouter } from 'next/navigation';
+import { AxiosError } from 'axios';
+import baseApi, { authApi } from '@/services/api';
+import { AuthOptions, AuthResponse } from '@/types/auth';
+import { userType } from '@/types/user';
 
 interface UseAuthReturn {
   token: string | null;
@@ -20,7 +20,8 @@ interface UseAuthReturn {
 export function useAuth(): UseAuthReturn {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { setAuth, clearAuth, getToken, getUser, isAuthenticated, isVerified } = useAuthStore();
+  const { setAuth, clearAuth, getToken, getUser, isAuthenticated, isVerified } =
+    useAuthStore();
   const router = useRouter();
 
   const login = useCallback(
@@ -30,17 +31,17 @@ export function useAuth(): UseAuthReturn {
 
       try {
         await authApi.get('/sanctum/csrf-cookie');
-        const response = await baseApi.post<AuthResponse>("/login", {
+        const response = await baseApi.post<AuthResponse>('/login', {
           email,
           password,
         });
         setAuth(response.data);
-        router.push("/dashboard");
+        router.push('/dashboard');
       } catch (error) {
         if (error instanceof AxiosError) {
-          setError(error.response?.data.message || "Falha no login");
+          setError(error.response?.data.message || 'Falha no login');
         } else {
-          setError("Ocorreu um erro inesperado");
+          setError('Ocorreu um erro inesperado');
         }
         throw error;
       } finally {
@@ -52,12 +53,12 @@ export function useAuth(): UseAuthReturn {
 
   const logout = useCallback(async (): Promise<void> => {
     try {
-      await baseApi.post("/logout");
+      await baseApi.post('/logout');
     } catch (error) {
-      console.error("Logout error:", error);
+      console.error('Logout error:', error);
     } finally {
       clearAuth();
-      router.push("/");
+      router.push('/');
     }
   }, [clearAuth, router]);
 

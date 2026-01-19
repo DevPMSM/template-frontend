@@ -10,5 +10,9 @@ export default function Page() {
     console.log(getUser()?.name);
   }, [getUser]);
 
-  return <div className='h-full w-full flex justify-center items-center'>{getUser()?.name}</div>;
+  return (
+    <div className="h-full w-full flex justify-center items-center">
+      {getUser()?.name}
+    </div>
+  );
 }
