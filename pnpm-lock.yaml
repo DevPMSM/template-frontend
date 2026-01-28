@@ -1266,7 +1266,10 @@ packages:
       {
         integrity: sha512-ZC5Bd0LgJXgwGqUknZY/vkUQ04r8NXnJZ3yYi4vDmSiZmC/pdSN0NbNRPxZpbtO4uAfDUAFffO8IZoM3Gj8IkA==,
       }
-    engines: { node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7 }
+    engines:
+      {
+        node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7,
+      }
     hasBin: true
 
   call-bind-apply-helpers@1.0.2:
@@ -2533,7 +2536,8 @@ packages:
       {
         integrity: sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w==,
       }
-    engines: { node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1 }
+    engines:
+      { node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1 }
     hasBin: true
 
   napi-postinstall@0.3.4:

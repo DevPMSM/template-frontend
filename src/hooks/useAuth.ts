@@ -20,12 +20,21 @@ interface UseAuthReturn {
 export function useAuth(): UseAuthReturn {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { setAuth, clearAuth, getToken, getUser, isAuthenticated, isVerified } =
-    useAuthStore();
+  const {
+    setAuth,
+    clearAuth,
+    getToken,
+    getUser,
+    isAuthenticated,
+    isVerified,
+  } = useAuthStore();
   const router = useRouter();
 
   const login = useCallback(
-    async ({ email, password }: AuthOptions): Promise<void> => {
+    async ({
+      email,
+      password,
+    }: AuthOptions): Promise<void> => {
       setLoading(true);
       setError(null);
 
@@ -37,20 +46,18 @@ export function useAuth(): UseAuthReturn {
             email,
             password,
           },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          },
         );
 
         setAuth(response.data);
         await useAuthStore.getState().fetchCurrentUser();
 
-        router.push('/auth/dashboard');
+        router.push('/');
       } catch (error) {
         if (error instanceof AxiosError) {
-          setError(error.response?.data.message || 'Falha no login');
+          setError(
+            error.response?.data.message ||
+              'Falha no login',
+          );
         } else {
           setError('Ocorreu um erro inesperado');
         }

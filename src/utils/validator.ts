@@ -38,3 +38,35 @@ export const validateCPF = (cpf: string): boolean => {
 
   return true;
 };
+
+export const checkPasswordStrength = (
+  password: string,
+): {
+  strength: 'weak' | 'medium' | 'strong';
+  message: string;
+} => {
+  // Verifica o comprimento mínimo
+  if (password.length < 6) {
+    return { strength: 'weak', message: 'Muito curta' };
+  }
+
+  // Verifica a complexidade
+  const hasLetters = /[a-zA-Z]/.test(password);
+  const hasNumbers = /\d/.test(password);
+  const hasSpecialChars = /[!@#$%^&*(),.?":{}|<>]/.test(
+    password,
+  );
+
+  const strengthScore =
+    (hasLetters ? 1 : 0) +
+    (hasNumbers ? 1 : 0) +
+    (hasSpecialChars ? 1 : 0);
+
+  if (strengthScore === 1) {
+    return { strength: 'weak', message: 'Fraca' };
+  } else if (strengthScore === 2) {
+    return { strength: 'medium', message: 'Media' };
+  } else {
+    return { strength: 'strong', message: 'Forte' };
+  }
+};

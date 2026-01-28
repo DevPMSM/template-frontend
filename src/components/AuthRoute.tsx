@@ -3,7 +3,6 @@ import { ReactNode, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
 import { useShallow } from 'zustand/shallow';
-import { isServerSide } from '@/lib/is-server-side';
 
 interface AuthRouteProps {
   children: ReactNode;
@@ -48,18 +47,34 @@ export default function AuthRoute({
   const [accessDenied, setAccessDenied] = useState(false);
 
   useEffect(() => {
-    if (isServerSide()) return;
+    if (typeof window === 'undefined') return;
 
-    if (!currentUser && isAuthenticated() && !isLoadingUser) {
+    if (
+      !currentUser &&
+      isAuthenticated() &&
+      !isLoadingUser
+    ) {
       fetchCurrentUser();
     }
-  }, [currentUser, isAuthenticated, isLoadingUser, fetchCurrentUser]);
+  }, [
+    currentUser,
+    isAuthenticated,
+    isLoadingUser,
+    fetchCurrentUser,
+  ]);
 
   useEffect(() => {
-    if (isServerSide()) return;
+    if (typeof window === 'undefined') return;
+    let active = true;
 
     if (isLoadingUser) {
-      return;
+      // defer state update to avoid synchronous setState inside the effect
+      Promise.resolve().then(() => {
+        if (active) setLoading(true);
+      });
+      return () => {
+        active = false;
+      };
     }
 
     const checkAccess = () => {
@@ -70,14 +85,16 @@ export default function AuthRoute({
         if (redirectUnauthenticated) {
           router.push('/auth/sign-in');
         }
-        setLoading(false);
+        if (active) setLoading(false);
         return;
       }
 
       if (requireVerified && !verified) {
-        alert('Você precisa verificar sua conta para acessar a essa página.');
+        alert(
+          'Você precisa verificar sua conta para acessar a essa página.',
+        );
         router.push('/auth/verify-email');
-        setLoading(false);
+        if (active) setLoading(false);
         return;
       }
 
@@ -86,16 +103,20 @@ export default function AuthRoute({
         const hasAccess = userRole === requiredRole;
 
         if (!hasAccess) {
-          setAccessDenied(true);
-          setLoading(false);
+          if (active) setAccessDenied(true);
+          if (active) setLoading(false);
           return;
         }
       }
 
-      setLoading(false);
+      if (active) setLoading(false);
     };
 
     checkAccess();
+
+    return () => {
+      active = false;
+    };
   }, [
     isAuthenticated,
     isVerified,

@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { LuUserRound } from 'react-icons/lu';
 import { MdLockOutline } from 'react-icons/md';
-import logoPref from '../../../../public/logo-prefeitura.png';
+import logoPref from '@public/logo-prefeitura.png';
 import { FormEvent, useEffect, useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 // import FooterInstitutional from '@/components/footerInstitutional';
@@ -32,7 +32,10 @@ export default function SignInPage() {
     <div className="bg-[#ECEDF3] text-black flex flex-col max-md:gap-9 items-center justify-center min-h-screen md:pb-20">
       <Image alt="logo-prefeitura" src={logoPref} />
       <main className="p-6 pt-6 max-md:mb-36 max-md:w-11/12 md:px-16 md:py-14 md:shadow-xl/30 md:inset-shadow-sm/30 rounded-2xl bg-white">
-        <form onSubmit={handleSubmit} className="flex flex-col">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col"
+        >
           <div className="flex ring-1 ring-gray-400 rounded-2xl items-center justify-between gap-3 px-4 py-2 mb-4 bg-white-dark">
             <LuUserRound className="w-5 h-5 text-gray-400" />
             <input
@@ -81,7 +84,6 @@ export default function SignInPage() {
           </div>
         </form>
       </main>
-      {/* <FooterInstitutional /> */}
     </div>
   );
 }
