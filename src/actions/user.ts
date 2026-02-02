@@ -1,59 +1,59 @@
-'use server';
+"use server";
 
-import baseApi from '@/services/api';
-import { revalidatePath } from 'next/cache';
-import { userType } from '@/types/user';
+import baseApi from "@/services/api";
+import { revalidatePath } from "next/cache";
+import { userType } from "@/types/user";
 
 export async function createUser(
   form: FormData,
-  token: string,
+  token: string
 ): Promise<userType> {
-  const resp = await baseApi.post('/users', form, {
+  const resp = await baseApi.post("/users", form, {
     headers: {
-      'Content-Type': 'multipart/form-data',
+      "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${token}`,
     },
   });
 
-  revalidatePath('/admin/users');
+  revalidatePath("/admin/users");
 
   return resp.data;
 }
 
 export async function updateUser(
   formData: FormData,
-  token: string,
+  token: string
 ): Promise<userType> {
-  formData.append('_method', 'PATCH');
+  formData.append("_method", "PATCH");
 
   const resp = await baseApi.post(
-    `/users/${formData.get('id')}`,
+    `/users/${formData.get("id")}`,
     formData,
     {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${token}`,
       },
-    },
+    }
   );
 
-  revalidatePath('/admin/users');
+  revalidatePath("/admin/users");
 
   return resp.data;
 }
 
 export async function deleteUser(
   id: string,
-  token: string,
+  token: string
 ): Promise<userType> {
   const resp = await baseApi.delete(`/users/${id}`, {
     headers: {
-      'Content-Type': 'multipart/form-data',
+      "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${token}`,
     },
   });
 
-  revalidatePath('/admin/users');
+  revalidatePath("/admin/users");
 
   return resp.data;
 }

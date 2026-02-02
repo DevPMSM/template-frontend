@@ -1,11 +1,11 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 import {
   createJSONStorage,
   persist,
-} from 'zustand/middleware';
-import { AuthResponse } from '@/types/auth';
-import { userType } from '@/types/user';
-import baseApi from '@/services/api';
+} from "zustand/middleware";
+import { AuthResponse } from "@/types/auth";
+import { userType } from "@/types/user";
+import baseApi from "@/services/api";
 
 interface AuthState {
   auth: AuthResponse | null;
@@ -34,7 +34,10 @@ export const useAuthStore = create<AuthState>()(
       setAuth: (authData: AuthResponse) => {
         const expirationTime =
           Date.now() + authData.expires_in * 1000;
-        set({ auth: authData, expirationTime });
+        set({
+          auth: authData,
+          expirationTime,
+        });
       },
 
       clearAuth: () =>
@@ -45,17 +48,21 @@ export const useAuthStore = create<AuthState>()(
         }),
 
       setCurrentUser: (user: userType) => {
-        set({ currentUser: user });
+        set({
+          currentUser: user,
+        });
       },
 
       fetchCurrentUser: async () => {
         const token = get().getToken();
         if (!token) return;
 
-        set({ isLoadingUser: true });
+        set({
+          isLoadingUser: true,
+        });
 
         try {
-          const response = await baseApi.get('/profile');
+          const response = await baseApi.get("/profile");
 
           if (response.status === 200) {
             const userData: userType = response.data;
@@ -65,14 +72,18 @@ export const useAuthStore = create<AuthState>()(
             });
           } else {
             get().clearAuth();
-            set({ isLoadingUser: false });
+            set({
+              isLoadingUser: false,
+            });
           }
         } catch (error) {
           console.error(
-            'Erro ao buscar usuário atual:',
-            error,
+            "Erro ao buscar usuário atual:",
+            error
           );
-          set({ isLoadingUser: false });
+          set({
+            isLoadingUser: false,
+          });
         }
       },
 
@@ -126,7 +137,7 @@ export const useAuthStore = create<AuthState>()(
       },
     }),
     {
-      name: 'auth-storage',
+      name: "auth-storage",
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         auth: state.auth,
@@ -142,6 +153,6 @@ export const useAuthStore = create<AuthState>()(
           state.fetchCurrentUser();
         }
       },
-    },
-  ),
+    }
+  )
 );

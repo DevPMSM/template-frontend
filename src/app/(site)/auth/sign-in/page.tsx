@@ -1,89 +1,116 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { LuUserRound } from 'react-icons/lu';
-import { MdLockOutline } from 'react-icons/md';
-import logoPref from '@public/logo-prefeitura.png';
-import { FormEvent, useEffect, useState } from 'react';
-import { useAuth } from '@/hooks/useAuth';
-// import FooterInstitutional from '@/components/footerInstitutional';
-import { useAuthStore } from '@/store/authStore';
-import { useRouter } from 'next/navigation';
+import logoPref from "@public/logo-pref-notext.png";
+import { FormEvent, useEffect, useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
+import { useAuthStore } from "@/store/authStore";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { TfiEmail } from "react-icons/tfi";
+import { PiKey } from "react-icons/pi";
+import Input from "@/components/Input";
+import Label from "@/components/Label";
 
 export default function SignInPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { login, error, loading } = useAuth();
   const { isAuthenticated } = useAuthStore();
+
   const router = useRouter();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    await login({ email, password });
+    await login({
+      email,
+      password,
+    });
+    console.log();
   };
 
   useEffect(() => {
     if (isAuthenticated()) {
-      router.push('/');
+      router.push("/");
     }
   }, [isAuthenticated, router]);
 
   return (
-    <div className="bg-[#ECEDF3] text-black flex flex-col max-md:gap-9 items-center justify-center min-h-screen md:pb-20">
-      <Image alt="logo-prefeitura" src={logoPref} />
-      <main className="p-6 pt-6 max-md:mb-36 max-md:w-11/12 md:px-16 md:py-14 md:shadow-xl/30 md:inset-shadow-sm/30 rounded-2xl bg-white">
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col"
-        >
-          <div className="flex ring-1 ring-gray-400 rounded-2xl items-center justify-between gap-3 px-4 py-2 mb-4 bg-white-dark">
-            <LuUserRound className="w-5 h-5 text-gray-400" />
-            <input
-              className="px-2 w-full focus:border-none focus:outline-none md:text-lg font-mediuma placeholder:font-semibold"
-              type="email"
-              name="email"
-              placeholder="Email"
-              required
-              onChange={(e) => setEmail(e.target.value)}
-            />
+    <div className="font-nunito flex min-h-screen w-full flex-col md:flex-row">
+      <div className="flex items-center justify-center bg-linear-to-t from-[#084B26CC] to-[#22325EB2] px-10 py-16 shadow-[4px_4px_4px_0px_rgba(0,0,0,0.25)] max-sm:rounded-b-4xl md:w-7/12 md:rounded-r-4xl">
+        <div className="flex text-white">
+          <div className="mr-3 min-w-1 flex-1 rounded-4xl bg-[#B2C5FB] md:w-2"></div>
+          <div>
+            <h2 className="mb-2 text-3xl font-black md:text-6xl">
+              Bem-vindo(a)!
+            </h2>
+            <p className="text-nomrmal max-w-lg leading-5 font-semibold md:text-3xl md:leading-8">
+              Só é possível acessa-lo se já estiver
+              cadastrado no sistema.
+            </p>
           </div>
-          <div className="flex ring-1 ring-gray-400 rounded-2xl items-center justify-center gap-3 px-4 py-2 mb-4 bg-white-dark">
-            <MdLockOutline className="w-5 h-5 text-gray-400" />
-            <input
-              className="px-2 w-full focus:border-none focus:outline-none md:text-lg placeholder:font-semibold"
-              type="password"
-              name="password"
-              placeholder="Senha"
-              required
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <p
-            className="text-sm font-semibold text-center max-md:text-[12px] text-red-500 md:flex pb-4 pt-1"
-            hidden={!error}
-          >
-            {error}
-            {error === 'Credenciais inválidas' && (
-              <a href="/auth/forgot-password">
-                ,{' '}
-                <span className="underline decoration-1 hover:text-red-800">
-                  Clique aqui
-                </span>{' '}
-                para redefinir a senha!
-              </a>
-            )}
-          </p>
-          <div className="flex justify-center items-center">
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-4/5 bg-green shadow-xl/25 text-white px-2 py-1 font-bold text-xl rounded-2xl cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        </div>
+      </div>
+      <div className="flex flex-1 items-center justify-center">
+        <div className="relative flex w-5/6 flex-col items-center justify-center rounded-2xl bg-[#F9F9F9] py-6 shadow-[inset_0px_4px_4px_0px_rgba(0,0,0,0.25),0px_4px_4px_0px_rgba(0,0,0,0.25)] md:h-152 md:max-w-lg">
+          <Image
+            src={logoPref}
+            alt="logo-prefeitura"
+            className="mb-8 w-17.5 md:w-28"
+          />
+          <div>
+            <p className="my-4 text-center text-2xl font-black text-[#3B5394] md:text-5xl">
+              LOGIN
+            </p>
+            <form
+              onSubmit={handleSubmit}
+              className="mb-12 flex w-72 flex-col justify-center gap-3 md:gap-6"
             >
-              {loading ? <>Carregando...</> : 'Login'}
-            </button>
+              <Label className="mx-auto flex h-8 w-10/12 items-center gap-2 overflow-hidden rounded-lg border-2 border-[#848484] px-1 md:h-10 md:w-full">
+                <TfiEmail className="text-[16px] md:text-[18px]" />
+                <Input
+                  type="email"
+                  name="email"
+                  placeholder="e-mail"
+                  className="h-full w-full border-none outline-none"
+                  defaultValue={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                />
+              </Label>
+              <Label className="mx-auto flex h-8 w-10/12 items-center gap-2 overflow-hidden rounded-lg border-2 border-[#848484] px-1 md:h-10 md:w-full">
+                <PiKey className="text-[16px] md:text-[18px]" />
+                <Input
+                  type="password"
+                  name="password"
+                  placeholder="senha"
+                  defaultValue={password}
+                  className="h-full w-full border-none outline-none"
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                />
+              </Label>
+              {error && (
+                <p className="text-center text-xs font-bold text-red-600">
+                  {error}
+                </p>
+              )}
+              <button
+                type="submit"
+                className="m-auto my-4 w-fit cursor-pointer rounded-lg bg-[#3B5394] px-4 py-1 font-black text-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] transition-all duration-150 hover:scale-105 md:h-12 md:w-44"
+              >
+                ENTRAR
+              </button>
+            </form>
+            <div className="absolute right-0 bottom-0 flex h-16 w-full flex-col items-center justify-center gap-1.5">
+              <hr className="w-3/12 rounded-2xl border border-[#B4B4B480]" />
+              <hr className="w-2/12 rounded-2xl border border-[#B4B4B480]" />
+              <hr className="w-1/12 rounded-2xl border border-[#B4B4B480]" />
+            </div>
           </div>
-        </form>
-      </main>
+        </div>
+      </div>
     </div>
   );
 }

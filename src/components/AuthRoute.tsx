@@ -1,8 +1,8 @@
-'use client';
-import { ReactNode, useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuthStore } from '@/store/authStore';
-import { useShallow } from 'zustand/shallow';
+"use client";
+import { ReactNode, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/authStore";
+import { useShallow } from "zustand/shallow";
 
 interface AuthRouteProps {
   children: ReactNode;
@@ -10,7 +10,7 @@ interface AuthRouteProps {
    * Role necessária para acessar a rota
    * @default undefined - apenas autenticação requerida
    */
-  requiredRole?: 'admin' | string;
+  requiredRole?: "admin" | string;
   /**
    * Redirecionar para login se não autenticado
    * @default true
@@ -41,13 +41,13 @@ export default function AuthRoute({
       fetchCurrentUser: state.fetchCurrentUser,
       isLoadingUser: state.isLoadingUser,
       currentUser: state.currentUser,
-    })),
+    }))
   );
   const [loading, setLoading] = useState(true);
   const [accessDenied, setAccessDenied] = useState(false);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
 
     if (
       !currentUser &&
@@ -64,7 +64,7 @@ export default function AuthRoute({
   ]);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
     let active = true;
 
     if (isLoadingUser) {
@@ -83,7 +83,7 @@ export default function AuthRoute({
 
       if (!authValid) {
         if (redirectUnauthenticated) {
-          router.push('/auth/sign-in');
+          router.push("/auth/sign-in");
         }
         if (active) setLoading(false);
         return;
@@ -91,9 +91,9 @@ export default function AuthRoute({
 
       if (requireVerified && !verified) {
         alert(
-          'Você precisa verificar sua conta para acessar a essa página.',
+          "Você precisa verificar sua conta para acessar a essa página."
         );
-        router.push('/auth/verify-email');
+        router.push("/auth/verify-email");
         if (active) setLoading(false);
         return;
       }
@@ -130,17 +130,17 @@ export default function AuthRoute({
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-white">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2  border-blue-500"></div>
+      <div className="flex min-h-screen items-center justify-center bg-white">
+        <div className="h-12 w-12 animate-spin rounded-full border-t-2 border-b-2 border-blue-500"></div>
       </div>
     );
   }
 
   if (accessDenied) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center p-6 bg-white rounded-lg shadow-md">
-          <h1 className="text-2xl font-bold text-red-500 mb-4">
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="rounded-lg bg-white p-6 text-center shadow-md">
+          <h1 className="mb-4 text-2xl font-bold text-red-500">
             Acesso Negado
           </h1>
           <p className="text-gray-600">

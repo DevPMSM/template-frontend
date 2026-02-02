@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useAuth } from '@/hooks/useAuth';
-import { useAuthStore } from '@/store/authStore';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useAuth } from "@/hooks/useAuth";
+import { useAuthStore } from "@/store/authStore";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function SignOutPage() {
   const { logout } = useAuth();
@@ -13,7 +13,7 @@ export default function SignOutPage() {
   useEffect(() => {
     if (isAuthenticated()) {
       logout();
-      router.push('/auth/sign-in');
+      router.push("/auth/sign-in");
     } else {
       router.back();
     }

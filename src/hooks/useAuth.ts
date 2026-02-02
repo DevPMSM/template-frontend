@@ -1,10 +1,10 @@
-import { useCallback, useState } from 'react';
-import { useAuthStore } from '@/store/authStore';
-import { useRouter } from 'next/navigation';
-import { AxiosError } from 'axios';
-import baseApi, { authApi } from '@/services/api';
-import { AuthOptions, AuthResponse } from '@/types/auth';
-import { userType } from '@/types/user';
+import { useCallback, useState } from "react";
+import { useAuthStore } from "@/store/authStore";
+import { useRouter } from "next/navigation";
+import { AxiosError } from "axios";
+import baseApi, { authApi } from "@/services/api";
+import { AuthOptions, AuthResponse } from "@/types/auth";
+import { userType } from "@/types/user";
 
 interface UseAuthReturn {
   token: string | null;
@@ -39,44 +39,43 @@ export function useAuth(): UseAuthReturn {
       setError(null);
 
       try {
-        await authApi.get('/sanctum/csrf-cookie');
+        await authApi.get("/sanctum/csrf-cookie");
         const response = await baseApi.post<AuthResponse>(
-          '/login',
+          "/login",
           {
             email,
             password,
-          },
+          }
         );
 
         setAuth(response.data);
         await useAuthStore.getState().fetchCurrentUser();
 
-        router.push('/');
+        router.push("/");
       } catch (error) {
         if (error instanceof AxiosError) {
           setError(
-            error.response?.data.message ||
-              'Falha no login',
+            error.response?.data.message || "Falha no login"
           );
         } else {
-          setError('Ocorreu um erro inesperado');
+          setError("Ocorreu um erro inesperado");
         }
         throw error;
       } finally {
         setLoading(false);
       }
     },
-    [setAuth, router],
+    [setAuth, router]
   );
 
   const logout = useCallback(async (): Promise<void> => {
     try {
-      await baseApi.post('/logout');
+      await baseApi.post("/logout");
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error("Logout error:", error);
     } finally {
       clearAuth();
-      router.push('/auth/sign-in');
+      router.push("/auth/sign-in");
     }
   }, [clearAuth, router]);
 

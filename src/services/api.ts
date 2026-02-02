@@ -1,9 +1,9 @@
-import { useAuthStore } from '@/store/authStore';
-import axios from 'axios';
+import { useAuthStore } from "@/store/authStore";
+import axios from "axios";
 
 const baseURL = process.env.NEXT_PUBLIC_API_URL?.replace(
   /\/api$/,
-  '',
+  ""
 );
 
 export const authApi = axios.create({
@@ -14,8 +14,8 @@ export const authApi = axios.create({
 const baseApi = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
-    'X-Requested-With': 'XMLHttpRequest',
-    'Content-Type': 'application/json',
+    "X-Requested-With": "XMLHttpRequest",
+    "Content-Type": "application/json",
   },
   withCredentials: true,
   withXSRFToken: true,

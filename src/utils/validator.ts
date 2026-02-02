@@ -1,6 +1,6 @@
 // Formata o número de telefone no padrão 999.999.999-99
 export const validateCPF = (cpf: string): boolean => {
-  cpf = cpf.replace(/[^\d]+/g, '');
+  cpf = cpf.replace(/[^\d]+/g, "");
 
   // Verifica se tem 11 dígitos e não é uma sequência repetida
   if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) {
@@ -40,21 +40,24 @@ export const validateCPF = (cpf: string): boolean => {
 };
 
 export const checkPasswordStrength = (
-  password: string,
+  password: string
 ): {
-  strength: 'weak' | 'medium' | 'strong';
+  strength: "weak" | "medium" | "strong";
   message: string;
 } => {
   // Verifica o comprimento mínimo
   if (password.length < 6) {
-    return { strength: 'weak', message: 'Muito curta' };
+    return {
+      strength: "weak",
+      message: "Muito curta",
+    };
   }
 
   // Verifica a complexidade
   const hasLetters = /[a-zA-Z]/.test(password);
   const hasNumbers = /\d/.test(password);
   const hasSpecialChars = /[!@#$%^&*(),.?":{}|<>]/.test(
-    password,
+    password
   );
 
   const strengthScore =
@@ -63,10 +66,19 @@ export const checkPasswordStrength = (
     (hasSpecialChars ? 1 : 0);
 
   if (strengthScore === 1) {
-    return { strength: 'weak', message: 'Fraca' };
+    return {
+      strength: "weak",
+      message: "Fraca",
+    };
   } else if (strengthScore === 2) {
-    return { strength: 'medium', message: 'Media' };
+    return {
+      strength: "medium",
+      message: "Media",
+    };
   } else {
-    return { strength: 'strong', message: 'Forte' };
+    return {
+      strength: "strong",
+      message: "Forte",
+    };
   }
 };
