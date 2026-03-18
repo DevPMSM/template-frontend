@@ -1,4 +1,4 @@
-import AuthRoute from "@/components/AuthRoute";
+import AuthRoute from "@/components/authRoute";
 
 export default function AuthLayout({
   children,

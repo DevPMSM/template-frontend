@@ -1,21 +1,28 @@
 "use client";
 
 import logoPref from "@public/logo-pref-notext.png";
-import { FormEvent, useEffect, useState } from "react";
+import {
+  FormEvent,
+  useEffect,
+  useState,
+  ChangeEvent,
+} from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { TfiEmail } from "react-icons/tfi";
-import { PiKey } from "react-icons/pi";
-import Input from "@/components/Input";
-import Label from "@/components/Label";
+import { Label } from "@/components/label";
+import { Button } from "@/components/button";
+import { Input } from "@/components/input";
+import { MdOutlineEmail } from "react-icons/md";
+import { HiOutlineKey } from "react-icons/hi";
 
 export default function SignInPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { login, error, loading } = useAuth();
   const { isAuthenticated } = useAuthStore();
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
@@ -65,28 +72,32 @@ export default function SignInPage() {
               onSubmit={handleSubmit}
               className="mb-12 flex w-72 flex-col justify-center gap-3 md:gap-6"
             >
-              <Label className="mx-auto flex h-8 w-10/12 items-center gap-2 overflow-hidden rounded-lg border-2 border-[#848484] px-1 md:h-10 md:w-full">
-                <TfiEmail className="text-[16px] md:text-[18px]" />
+              <Label className="mx-auto flex h-8 w-10/12 items-center gap-2 overflow-hidden rounded-lg border-2 border-[#848484] bg-white px-2 md:h-10 md:w-full">
+                <MdOutlineEmail className="text-[16px] md:text-[20px]" />
                 <Input
                   type="email"
                   name="email"
-                  placeholder="e-mail"
-                  className="h-full w-full border-none outline-none"
+                  placeholder="Email"
+                  className="h-full w-full border-none px-0 md:text-lg"
                   defaultValue={email}
-                  onChange={(e) => {
+                  onChange={(
+                    e: ChangeEvent<HTMLInputElement>
+                  ) => {
                     setEmail(e.target.value);
                   }}
                 />
               </Label>
-              <Label className="mx-auto flex h-8 w-10/12 items-center gap-2 overflow-hidden rounded-lg border-2 border-[#848484] px-1 md:h-10 md:w-full">
-                <PiKey className="text-[16px] md:text-[18px]" />
+              <Label className="mx-auto flex h-8 w-10/12 items-center gap-2 overflow-hidden rounded-lg border-2 border-[#848484] bg-white px-2 md:h-10 md:w-full">
+                <HiOutlineKey className="text-[16px] md:text-[20px]" />
                 <Input
                   type="password"
                   name="password"
                   placeholder="senha"
                   defaultValue={password}
-                  className="h-full w-full border-none outline-none"
-                  onChange={(e) => {
+                  className="h-full w-full border-none px-0 md:text-lg"
+                  onChange={(
+                    e: ChangeEvent<HTMLInputElement>
+                  ) => {
                     setPassword(e.target.value);
                   }}
                 />
@@ -96,12 +107,12 @@ export default function SignInPage() {
                   {error}
                 </p>
               )}
-              <button
+              <Button
                 type="submit"
-                className="m-auto my-4 w-fit cursor-pointer rounded-lg bg-[#3B5394] px-4 py-1 font-black text-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] transition-all duration-150 hover:scale-105 md:h-12 md:w-44"
+                className="m-auto my-4 w-fit cursor-pointer rounded-lg border-0 bg-[#3B5394] px-4 py-1 font-black text-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] transition-all duration-150 hover:scale-105 md:h-12 md:w-44"
               >
                 ENTRAR
-              </button>
+              </Button>
             </form>
             <div className="absolute right-0 bottom-0 flex h-16 w-full flex-col items-center justify-center gap-1.5">
               <hr className="w-3/12 rounded-2xl border border-[#B4B4B480]" />
