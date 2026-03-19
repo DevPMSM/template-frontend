@@ -16,6 +16,7 @@ import { Button } from "@/components/button";
 import { Input } from "@/components/input";
 import { MdOutlineEmail } from "react-icons/md";
 import { HiOutlineKey } from "react-icons/hi";
+import Loading from "@/components/loading";
 
 export default function SignInPage() {
   const [email, setEmail] = useState("");
@@ -28,11 +29,11 @@ export default function SignInPage() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     await login({
       email,
       password,
-    });
-    console.log();
+    }).catch(() => setIsLoading(false));
   };
 
   useEffect(() => {
@@ -58,7 +59,7 @@ export default function SignInPage() {
         </div>
       </div>
       <div className="flex flex-1 items-center justify-center">
-        <div className="relative flex w-5/6 flex-col items-center justify-center rounded-2xl bg-[#F9F9F9] py-6 shadow-[inset_0px_4px_4px_0px_rgba(0,0,0,0.25),0px_4px_4px_0px_rgba(0,0,0,0.25)] md:h-152 md:max-w-lg">
+        <div className="relative flex w-5/6 flex-col items-center justify-center rounded-2xl bg-[#F9F9F9] py-6 shadow-[inset_0px_4px_4px_0px_rgba(0,0,0,0.25),0px_4px_4px_0px_rgba(0,0,0,0.25)] md:h-152 md:max-w-md">
           <Image
             src={logoPref}
             alt="logo-prefeitura"
@@ -70,7 +71,7 @@ export default function SignInPage() {
             </p>
             <form
               onSubmit={handleSubmit}
-              className="mb-12 flex w-72 flex-col justify-center gap-3 md:gap-6"
+              className="flex w-72 flex-col justify-center gap-3 max-md:mb-6 md:gap-6"
             >
               <Label className="mx-auto flex h-8 w-10/12 items-center gap-2 overflow-hidden rounded-lg border-2 border-[#848484] bg-white px-2 md:h-10 md:w-full">
                 <MdOutlineEmail className="text-[16px] md:text-[20px]" />
@@ -107,12 +108,16 @@ export default function SignInPage() {
                   {error}
                 </p>
               )}
-              <Button
-                type="submit"
-                className="m-auto my-4 w-fit cursor-pointer rounded-lg border-0 bg-[#3B5394] px-4 py-1 font-black text-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] transition-all duration-150 hover:scale-105 md:h-12 md:w-44"
-              >
-                ENTRAR
-              </Button>
+              {!isLoading ? (
+                <Button
+                  type="submit"
+                  className="m-auto my-4 w-fit cursor-pointer rounded-lg border-0 bg-[#3B5394] px-4 py-1 font-black text-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] transition-all duration-150 hover:scale-105 md:h-12 md:w-44"
+                >
+                  ENTRAR
+                </Button>
+              ) : (
+                <Loading className="my-4 px-4 py-1" />
+              )}
             </form>
             <div className="absolute right-0 bottom-0 flex h-16 w-full flex-col items-center justify-center gap-1.5">
               <hr className="w-3/12 rounded-2xl border border-[#B4B4B480]" />
