@@ -1,38 +1,13 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  experimental: {
-    serverActions: {
-      bodySizeLimit: "10mb",
-    },
-  },
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   images: {
-    remotePatterns: [
-      {
-        protocol: "http",
-        hostname: "localhost",
-        port: "8000",
-        pathname: "/storage/**",
-      },
-      {
-        protocol: "http",
-        hostname: "127.0.0.1",
-        port: "8000",
-        pathname: "/storage/**",
-      },
-      {
-        protocol: "https",
-        hostname: "via.placeholder.com",
-        pathname: "/**",
-      },
-    ],
+    domains: [
+      process.env.NEXT_PUBLIC_API_DOMAIN,
+      "via.placeholder.com",
+    ], // Permite imagens externas
   },
   eslint: {
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    // Recomendo ignorar erros de build no servidor se o código rodar localmente
-    ignoreBuildErrors: true,
+    ignoreDuringBuilds: true, // Ignora erros de ESLint durante o build
   },
 };
 
