@@ -3,7 +3,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
 import { useShallow } from "zustand/shallow";
-
+import Loading from "./loading";
 interface AuthRouteProps {
   children: ReactNode;
   /**
@@ -33,6 +33,7 @@ export default function AuthRoute({
     fetchCurrentUser,
     isLoadingUser,
     currentUser,
+    validateToken,
   } = useAuthStore(
     useShallow((state) => ({
       isAuthenticated: state.isAuthenticated,
@@ -41,8 +42,10 @@ export default function AuthRoute({
       fetchCurrentUser: state.fetchCurrentUser,
       isLoadingUser: state.isLoadingUser,
       currentUser: state.currentUser,
+      validateToken: state.validateToken,
     }))
   );
+
   const [loading, setLoading] = useState(true);
   const [accessDenied, setAccessDenied] = useState(false);
 
@@ -68,7 +71,6 @@ export default function AuthRoute({
     let active = true;
 
     if (isLoadingUser) {
-      // defer state update to avoid synchronous setState inside the effect
       Promise.resolve().then(() => {
         if (active) setLoading(true);
       });
@@ -77,19 +79,29 @@ export default function AuthRoute({
       };
     }
 
-    const checkAccess = () => {
+    const checkAccess = async () => {
       const authValid = isAuthenticated();
-      const verified = isVerified();
 
       if (!authValid) {
         if (redirectUnauthenticated) {
-          router.push("/auth/sign-in");
+          router.push("/");
         }
         if (active) setLoading(false);
         return;
       }
 
-      if (requireVerified && !verified) {
+      // Validar token com o servidor
+      const tokenValid = await validateToken();
+
+      if (!tokenValid) {
+        if (redirectUnauthenticated) {
+          router.push("/");
+        }
+        if (active) setLoading(false);
+        return;
+      }
+
+      if (requireVerified && !isVerified()) {
         alert(
           "Você precisa verificar sua conta para acessar a essa página."
         );
@@ -126,12 +138,13 @@ export default function AuthRoute({
     redirectUnauthenticated,
     router,
     isLoadingUser,
+    validateToken,
   ]);
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-white">
-        <div className="h-12 w-12 animate-spin rounded-full border-t-2 border-b-2 border-blue-500"></div>
+      <div className="flex min-h-screen items-center justify-center">
+        <Loading color="#639855" />
       </div>
     );
   }

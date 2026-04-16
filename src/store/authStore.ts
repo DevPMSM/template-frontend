@@ -20,6 +20,7 @@ interface AuthState {
   isAuthenticated: () => boolean;
   isVerified: () => boolean;
   fetchCurrentUser: () => Promise<void>;
+  validateToken: () => Promise<boolean>;
   setCurrentUser: (user: userType) => void;
 }
 
@@ -84,6 +85,20 @@ export const useAuthStore = create<AuthState>()(
           set({
             isLoadingUser: false,
           });
+        }
+      },
+
+      validateToken: async () => {
+        const token = get().getToken();
+        if (!token) return false;
+
+        try {
+          const response = await baseApi.get("/profile");
+          return response.status === 200;
+        } catch (error) {
+          console.error("Erro ao validar token:", error);
+          get().clearAuth();
+          return false;
         }
       },
 
