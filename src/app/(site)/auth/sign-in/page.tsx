@@ -17,6 +17,7 @@ import { PiKey } from "react-icons/pi";
 import Loading from "@/components/loading";
 import { Label } from "@/components/label";
 import { Input } from "@/components/input";
+import { toast } from "react-toastify";
 
 export default function SignInPage() {
   const [email, setEmail] = useState("");
@@ -33,7 +34,10 @@ export default function SignInPage() {
     await login({
       email,
       password,
-    }).catch(() => setIsLoading(false));
+    }).catch(() => {
+      setIsLoading(false);
+      toast.error(error);
+    });
   };
 
   useEffect(() => {
@@ -103,11 +107,6 @@ export default function SignInPage() {
                   }}
                 />
               </Label>
-              {error && (
-                <p className="text-center text-xs font-bold text-red-600">
-                  {error}
-                </p>
-              )}
 
               {!isLoading ? (
                 <button
