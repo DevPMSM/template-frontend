@@ -43,16 +43,8 @@ export default function SignInPage() {
   }, [isAuthenticated, router]);
 
   return (
-    <div className="font-nunito relative flex min-h-screen w-full flex-col md:flex-row">
-      <div className="relative flex items-center justify-center bg-linear-to-t from-[#084B26CC] to-[#22325EB2] px-10 py-16 shadow-[4px_4px_4px_0px_rgba(0,0,0,0.25)] max-sm:rounded-b-4xl md:w-7/12 md:rounded-r-4xl">
-        <IoChevronBackOutline
-          className="top-o absolute left-0 transition-all duration-200 hover:scale-110 hover:cursor-pointer md:left-8"
-          size={30}
-          color="#3B5394"
-          onClick={() => {
-            router.back();
-          }}
-        />
+    <div className="font-nunito flex min-h-screen w-full flex-col md:flex-row">
+      <div className="flex items-center justify-center bg-linear-to-t from-[#084B26CC] to-[#22325EB2] px-10 py-16 shadow-[4px_4px_4px_0px_rgba(0,0,0,0.25)] max-sm:rounded-b-4xl md:w-7/12 md:rounded-r-4xl">
         <div className="flex text-white">
           <div className="mr-3 min-w-1 flex-1 rounded-4xl bg-[#B2C5FB] md:w-2"></div>
           <div>
