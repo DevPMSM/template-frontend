@@ -1,7 +1,12 @@
 "use client";
 
 import logoPref from "@public/logo-pref-notext.png";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  FormEvent,
+  useEffect,
+  useState,
+} from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { IoChevronBackOutline } from "react-icons/io5";
 import { useAuthStore } from "@/store/authStore";
@@ -41,7 +46,7 @@ export default function SignInPage() {
     <div className="font-nunito relative flex min-h-screen w-full flex-col md:flex-row">
       <div className="relative flex items-center justify-center bg-linear-to-t from-[#084B26CC] to-[#22325EB2] px-10 py-16 shadow-[4px_4px_4px_0px_rgba(0,0,0,0.25)] max-sm:rounded-b-4xl md:w-7/12 md:rounded-r-4xl">
         <IoChevronBackOutline
-          className="absolute top-o left-0 transition-all duration-200 hover:scale-110 hover:cursor-pointer md:left-8"
+          className="top-o absolute left-0 transition-all duration-200 hover:scale-110 hover:cursor-pointer md:left-8"
           size={30}
           color="#3B5394"
           onClick={() => {
