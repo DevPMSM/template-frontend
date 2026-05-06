@@ -14,7 +14,7 @@ export async function createUser(
         Authorization: `Bearer ${token}`,
       },
     });
-    revalidatePath("/dashboard");
+    revalidatePath("/admin/users");
     return resp.data;
   } catch (error: any) {
     const responseData = error.response?.data;
@@ -50,7 +50,7 @@ export async function updateUser(
         Authorization: `Bearer ${token}`,
       },
     });
-    revalidatePath("/dashboard");
+    revalidatePath("/admin/users");
     return resp.data;
   } catch (error: any) {
     const responseData = error.response?.data;
@@ -83,7 +83,7 @@ export async function deleteUser(
         Authorization: `Bearer ${token}`,
       },
     });
-    revalidatePath("/dashboard");
+    revalidatePath("/admin/users");
     return resp.data;
   } catch (error: any) {
     const responseData = error.response?.data;

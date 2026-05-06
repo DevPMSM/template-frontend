@@ -1,6 +1,7 @@
 "use client";
 
 import AuthRoute from "@/components/authRoute";
+import Sidebar from "@/components/dashboard/sidebar";
 
 export default function AuthLayout({
   children,
@@ -9,8 +10,8 @@ export default function AuthLayout({
 }) {
   return (
     <AuthRoute>
-      <div className="bg-red-100">
-        Login to access the dashboard
+      <div className="flex flex-col font-nunito">
+        <Sidebar/>
         {children}
       </div>
     </AuthRoute>

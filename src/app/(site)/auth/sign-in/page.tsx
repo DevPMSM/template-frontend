@@ -42,7 +42,7 @@ export default function SignInPage() {
 
   useEffect(() => {
     if (isAuthenticated()) {
-      router.push("/dashboard");
+      router.push("/admin");
     }
   }, [isAuthenticated, router]);
 

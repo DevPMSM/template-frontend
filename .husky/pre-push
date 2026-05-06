@@ -1,0 +1,29 @@
+#!/bin/sh
+
+echo ""
+echo "=============================================="
+echo "🚀 Validando o projeto antes do push..."
+echo "=============================================="
+echo ""
+echo "⏳ Iniciando build do Next.js..."
+echo ""
+
+if ! pnpm build; then
+  echo ""
+  echo "=============================================="
+  echo "❌ Build falhou!"
+  echo "👉 O projeto está quebrado. O push foi bloqueado."
+  echo "👉 Corrija os erros, faça um novo commit e tente o push novamente."
+  echo "=============================================="
+  echo ""
+  exit 1
+fi
+
+echo ""
+echo "=============================================="
+echo "✅ Build concluído com sucesso! 🎉"
+echo "🚀 Push liberado e subindo para o repositório!"
+echo "=============================================="
+echo ""
+
+exit 0

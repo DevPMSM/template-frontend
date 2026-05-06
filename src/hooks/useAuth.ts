@@ -51,7 +51,7 @@ export function useAuth(): UseAuthReturn {
         setAuth(response.data);
         await useAuthStore.getState().fetchCurrentUser();
 
-        router.push("/");
+        router.push("/admin");
       } catch (error) {
         if (error instanceof AxiosError) {
           setError(
