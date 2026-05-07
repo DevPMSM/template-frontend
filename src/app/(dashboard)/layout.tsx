@@ -10,9 +10,11 @@ export default function AuthLayout({
 }) {
   return (
     <AuthRoute>
-      <div className="flex flex-col font-nunito">
-        <Sidebar/>
-        {children}
+      <div className="font-nunito flex h-screen flex-col overflow-hidden md:flex-row">
+        <Sidebar />
+        <div className="flex flex-1 flex-col overflow-hidden">
+          {children}
+        </div>
       </div>
     </AuthRoute>
   );

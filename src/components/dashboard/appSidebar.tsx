@@ -36,10 +36,10 @@ export function AppSidebar() {
 
   return (
     <Sidebar className="border-none">
-      <SidebarContent className="rounded-r-2xl bg-[#4c65ac]">
+      <SidebarContent className="bg-[#4c65ac]">
         <SidebarHeader className="m-3 rounded-sm max-md:bg-[#2d3f6e]">
           <div className="flex items-center gap-3 md:mt-6 md:flex-col">
-            <Avatar>
+            <Avatar className="scale-175">
               <AvatarImage src={user?.image} />
               <AvatarFallback className="my-auto bg-transparent">
                 <FaCircleUser
@@ -49,10 +49,10 @@ export function AppSidebar() {
               </AvatarFallback>
             </Avatar>
             <div>
-              <p className="text-lg text-white w-full text-center font-bold line-clamp-1">
+              <p className="line-clamp-1 w-full text-center text-lg font-bold text-white">
                 {user?.name}
               </p>
-              <p className="text-md text-white text-center font-semibold line-clamp-1">
+              <p className="text-md line-clamp-1 text-center font-semibold text-white">
                 {user?.role[0].toUpperCase() +
                   "" +
                   user?.role.slice(1)}
