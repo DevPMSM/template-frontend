@@ -1,30 +1,29 @@
-import { defineConfig, globalIgnores } from 'eslint/config';
-import nextVitals from 'eslint-config-next/core-web-vitals';
-import nextTs from 'eslint-config-next/typescript';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
+// eslint.config.mjs
+import nextPlugin from "@next/eslint-plugin-next";
+import tsParser from "@typescript-eslint/parser";
+import tsPlugin from "@typescript-eslint/eslint-plugin";
 
 const eslintConfig = [
-  ...compat.config({
-    extends: [
-      'next/core-web-vitals',
-      'next/typescript',
-      'prettier',
-    ],
-    rules: {
-      semi: ['error'],
-      quotes: ['error', 'double'],
-      'prefer-arrow-callback': ['error'],
-      'prefer-template': ['error'],
+  {
+    ignores: [".next/**", "node_modules/**"],
+  },
+  {
+    plugins: {
+      "@next/next": nextPlugin,
+      "@typescript-eslint": tsPlugin,
     },
-  }),
+    languageOptions: {
+      parser: tsParser,
+    },
+    rules: {
+      ...nextPlugin.configs["core-web-vitals"].rules,
+      ...tsPlugin.configs["recommended"].rules,
+      semi: ["error"],
+      quotes: ["error", "double"],
+      "prefer-arrow-callback": ["error"],
+      "prefer-template": ["error"],
+    },
+  },
 ];
 
 export default eslintConfig;
