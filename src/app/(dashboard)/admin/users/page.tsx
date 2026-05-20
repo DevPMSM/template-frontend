@@ -12,7 +12,7 @@ import baseApi from "@/services/api";
 import { useUsersStore } from "@/store/useUser";
 import { paginationResponseType } from "@/types/pagination-response";
 import { userType } from "@/types/user";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { IoEyeOutline } from "react-icons/io5";
 import {
@@ -24,28 +24,33 @@ import { TiPencil } from "react-icons/ti";
 
 export default function Home() {
   const { users, setUsers } = useUsersStore();
-  const { user, token } = useAuth();
-  let pagination: paginationResponseType | null = null;
+  const { user: userLogged } = useAuth();
+
+  const [userPage, setUserPage] = useState<number>(1);
+
+  // Paginação
+  const PER_PAGE = 30;
+  const [lastPage, setLastPage] = useState<number>(1);
+  const [isLoading, setIsLoading] =
+    useState<boolean>(false);
 
   useEffect(() => {
-    if (users.length === 0) {
-      baseApi
-        .get<paginationResponseType<userType[]>>(
-          "/users/",
-          {
-            params: {
-              per_page: 30,
-            },
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        )
-        .then((res) => {
-          console.log(res.data);
-          pagination = res.data;
-          setUsers(res.data.data);
-        });
-    }
-  }, []);
+    setIsLoading(true);
+    baseApi
+      .get<paginationResponseType<userType[]>>(
+        `/users?page=${userPage}&per_page=${PER_PAGE}`
+      )
+      .then((res) => {
+        setUsers(res.data.data);
+        setLastPage(res.data.last_page);
+      })
+      .catch((err) => {
+        console.error(err.response?.data);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [userPage, setUsers]);
 
   return (
     <div className="mx-auto flex h-full w-11/12 flex-col items-center overflow-hidden md:w-full md:max-w-7xl md:p-4 md:pr-7">
@@ -79,48 +84,55 @@ export default function Home() {
         </div>
         <div className="my-2 flex-1 overflow-y-auto rounded-sm border-2 border-[#6273a0] px-0.5">
           {users.map((user, key) => {
-            return (
-              <Card
-                key={user.id}
-                className={`${key % 2 === 0 ? "bg-[#e5ecff]/70" : ""}`}
-                columnValues={[user.name, user.email]}
-                dialogInformation={
-                  <DialogUserInformation
-                    title="Usuário"
-                    user={user}
-                  >
-                    <IoEyeOutline
-                      className="cursor-pointer rounded-full bg-[#639855] p-0.5 text-white transition-all duration-200 hover:scale-90"
-                      size={22}
-                    />
-                  </DialogUserInformation>
-                }
-                dialogUpdate={
-                  <DialogUserUpdate
-                    title="Usuário"
-                    user={user}
-                  >
-                    <TiPencil
-                      className="cursor-pointer rounded-full bg-blue-600 p-0.5 transition-all duration-200 hover:scale-90"
-                      size={20}
-                      fill="white"
-                    />
-                  </DialogUserUpdate>
-                }
-                dialogDelete={
-                  <DialogUserDelete user={user}>
-                    <FaRegTrashCan
-                      className="bg-destructive cursor-pointer rounded-full p-0.5 transition-all duration-200 hover:scale-90"
-                      size={20}
-                      fill="white"
-                    />
-                  </DialogUserDelete>
-                }
-              />
-            );
+            if (user.id !== userLogged?.id) {
+              return (
+                <Card
+                  key={user.id}
+                  className={`${key % 2 === 0 ? "bg-[#e5ecff]/70" : ""}`}
+                  columnValues={[user.name, user.email]}
+                  dialogInformation={
+                    <DialogUserInformation
+                      title="Usuário"
+                      user={user}
+                    >
+                      <IoEyeOutline
+                        className="cursor-pointer rounded-full bg-[#639855] p-0.5 text-white transition-all duration-200 hover:scale-90"
+                        size={22}
+                      />
+                    </DialogUserInformation>
+                  }
+                  dialogUpdate={
+                    <DialogUserUpdate
+                      title="Usuário"
+                      user={user}
+                    >
+                      <TiPencil
+                        className="cursor-pointer rounded-full bg-blue-600 p-0.5 transition-all duration-200 hover:scale-90"
+                        size={20}
+                        fill="white"
+                      />
+                    </DialogUserUpdate>
+                  }
+                  dialogDelete={
+                    <DialogUserDelete user={user}>
+                      <FaRegTrashCan
+                        className="bg-destructive cursor-pointer rounded-full p-0.5 transition-all duration-200 hover:scale-90"
+                        size={20}
+                        fill="white"
+                      />
+                    </DialogUserDelete>
+                  }
+                />
+              );
+            }
           })}
         </div>
-        <Pagination pagination={pagination!} />
+        <Pagination
+          currentPage={userPage}
+          lastPage={lastPage}
+          onPageChange={setUserPage}
+          isLoading={isLoading}
+        />
       </div>
     </div>
   );
