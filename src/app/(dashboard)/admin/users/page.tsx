@@ -97,7 +97,7 @@ export default function Home() {
                     >
                       <IoEyeOutline
                         className="cursor-pointer rounded-full bg-[#639855] p-0.5 text-white transition-all duration-200 hover:scale-90"
-                        size={22}
+                        size={24}
                       />
                     </DialogUserInformation>
                   }
@@ -108,7 +108,7 @@ export default function Home() {
                     >
                       <TiPencil
                         className="cursor-pointer rounded-full bg-blue-600 p-0.5 transition-all duration-200 hover:scale-90"
-                        size={20}
+                        size={24}
                         fill="white"
                       />
                     </DialogUserUpdate>
@@ -116,8 +116,8 @@ export default function Home() {
                   dialogDelete={
                     <DialogUserDelete user={user}>
                       <FaRegTrashCan
-                        className="bg-destructive cursor-pointer rounded-full p-0.5 transition-all duration-200 hover:scale-90"
-                        size={20}
+                        className="bg-destructive cursor-pointer rounded-full p-0.75 transition-all duration-200 hover:scale-90"
+                        size={24}
                         fill="white"
                       />
                     </DialogUserDelete>
