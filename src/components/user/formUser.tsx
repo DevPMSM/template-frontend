@@ -5,11 +5,7 @@ import {
   useState,
 } from "react";
 import { formatPhoneNumber } from "@/utils/formatter";
-import {
-  FaEye,
-  FaRegEye,
-  FaRegEyeSlash,
-} from "react-icons/fa";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { userType } from "@/types/user";
 import { Button } from "@/components/button";
 import {
@@ -23,11 +19,6 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 import Image from "next/image";
 import Loading from "../loading";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../popover";
 import { Label } from "../label";
 import { Input } from "../input";
 
@@ -94,7 +85,7 @@ export default function FormUser({
   return (
     <form
       onSubmit={submit}
-      className="no-scrollbar mt-1 grid grid-cols-12 gap-2 overflow-x-visible overflow-y-scroll max-sm:max-h-[600px] md:gap-4 md:px-5"
+      className="no-scrollbar mt-1 grid grid-cols-12 gap-2 overflow-x-visible overflow-y-scroll max-sm:max-h-150 md:gap-4 md:px-5"
     >
       <Label
         title={`Nome${!user ? "*" : ""}`}
@@ -246,6 +237,7 @@ export default function FormUser({
               width={300}
               height={300}
             />
+            {user.image}
           </a>
         </div>
       )}

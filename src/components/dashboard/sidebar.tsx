@@ -33,18 +33,18 @@ export default function Layout() {
                   className={cn(
                     "group font-nunito my-0.5 flex h-11 px-2 text-[19px] font-medium text-white/20 transition-transform duration-200 hover:border hover:border-white/10 hover:bg-transparent hover:bg-linear-to-l hover:from-[#3147af] hover:to-[#3b53b6] hover:font-bold",
                     pathname === "/admin/users"
-                      ? "group-hover:none border border-l-2 border-white/10 border-l-white bg-linear-to-l from-[#3147af] to-[#3b53b6] outline transition-all duration-100"
+                      ? "group-hover:none border border-l-2 border-white/10 border-l-white bg-linear-to-l from-[#3147af] to-[#3b53b6] outline transition-all duration-200"
                       : ""
                   )}
                 >
                   <span
-                    className={`flex items-center gap-2 text-ellipsis text-white transition-all duration-300 line-clamp-1${
+                    className={`flex items-center gap-2 text-ellipsis text-white transition-all duration-200 line-clamp-1${
                       pathname === "/admin/users"
                         ? "font-bold"
                         : ""
                     }`}
                   >
-                    <PiUserLight className="!h-5.5 !w-5.5 text-white" />
+                    <PiUserLight className="h-5.5! w-5.5! text-white" />
                     Usuários
                   </span>
                 </a>

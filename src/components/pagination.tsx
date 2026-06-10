@@ -138,9 +138,9 @@ export default function Pagination({
             onClick={() => handlePageChange(page)}
             disabled={isLoading}
             className={cn(
-              "h-9 w-auto cursor-pointer bg-transparent font-semibold transition-all",
+              "text-md h-9 w-auto cursor-pointer bg-transparent font-semibold transition-all",
               currentPage === page
-                ? "text-[#4CAF50]"
+                ? "text-[#adbaf2]"
                 : "text-white",
               isLoading && "opacity-50"
             )}

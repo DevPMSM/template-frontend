@@ -5,8 +5,6 @@ import {
   SidebarGroupContent,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
 } from "@/components/sidebar";
 import { useAuth } from "@/hooks/useAuth";
 import {
@@ -14,7 +12,6 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "../avatar";
-import { getImageUrl } from "@/lib/imageUrl";
 import { usePathname } from "next/dist/client/components/navigation";
 import Image from "next/image";
 import {
@@ -22,23 +19,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "../popover";
-import { PiUserLight } from "react-icons/pi";
 import DialogUserUpdate from "../user/dialogs/dialogUserUpdate";
 import { TbUserEdit } from "react-icons/tb";
 import { IoMdLogOut } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
-import { cn } from "@/lib/utils";
-
-// const items = [
-//   {
-//     title: "Usuários",
-//     url: "/admin/users",
-//   },
-//   {
-//     title: "Configuração",
-//     url: "/admin/config",
-//   },
-// ];
 
 type AppSidebarProps = {
   children: React.ReactNode;
@@ -78,13 +62,6 @@ export function AppSidebar({ children }: AppSidebarProps) {
               <div className="mt-1 w-full border-t"></div>
             </div>
             <SidebarMenu className="mt-4">
-              {/* {items.map((item, value) => (
-                <SidebarMenuItem key={value}>
-                  <SidebarMenuButton
-                    asChild
-                  ></SidebarMenuButton>
-                </SidebarMenuItem>
-              ))} */}
               {children}
             </SidebarMenu>
           </SidebarGroupContent>
