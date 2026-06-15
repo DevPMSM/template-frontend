@@ -5,6 +5,7 @@ import {
   SidebarGroupContent,
   SidebarHeader,
   SidebarMenu,
+  SidebarMenuButton,
 } from "@/components/sidebar";
 import { useAuth } from "@/hooks/useAuth";
 import {
@@ -23,14 +24,58 @@ import DialogUserUpdate from "../user/dialogs/dialogUserUpdate";
 import { TbUserEdit } from "react-icons/tb";
 import { IoMdLogOut } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
+import { cn } from "@/lib/utils";
+import { PiUserLight } from "react-icons/pi";
+import { IconType } from "react-icons";
 
-type AppSidebarProps = {
-  children: React.ReactNode;
+type AppSidebarButtonProps = {
+  name: string;
+  url: string;
+  icon: IconType;
 };
 
-export function AppSidebar({ children }: AppSidebarProps) {
-  const { user, logout } = useAuth();
+function AppSidebarButton({
+  name,
+  url,
+  icon,
+}: AppSidebarButtonProps) {
   const pathname = usePathname();
+  const Icon = icon;
+
+  return (
+    <SidebarMenuButton asChild>
+      <a
+        href={url}
+        className={cn(
+          "group font-nunito my-0.5 flex h-11 px-2 text-[19px] font-medium text-white/20 transition-transform duration-200 hover:border hover:border-white/10 hover:bg-transparent hover:bg-linear-to-l hover:from-[#3147af] hover:to-[#3b53b6] hover:font-bold",
+          pathname === url
+            ? "group-hover:none border border-l-2 border-white/10 border-l-white bg-linear-to-l from-[#3147af] to-[#3b53b6] outline transition-all duration-200"
+            : ""
+        )}
+      >
+        <span
+          className={`line-clamp-1 flex items-center gap-2 text-ellipsis text-white transition-all duration-200 ${
+            pathname === url ? "font-bold" : ""
+          }`}
+        >
+          <Icon className="h-5! w-5! text-white" />
+          {name}
+        </span>
+      </a>
+    </SidebarMenuButton>
+  );
+}
+
+export function AppSidebar() {
+  const { user, logout } = useAuth();
+
+  const routes: AppSidebarButtonProps[] = [
+    {
+      name: "Usuários",
+      url: "/admin/users",
+      icon: PiUserLight,
+    },
+  ];
 
   return (
     <Sidebar className="w-75 border-none">
@@ -62,7 +107,16 @@ export function AppSidebar({ children }: AppSidebarProps) {
               <div className="mt-1 w-full border-t"></div>
             </div>
             <SidebarMenu className="mt-4">
-              {children}
+              {routes.map((e, index) => {
+                return (
+                  <AppSidebarButton
+                    name={e.name}
+                    url={e.url}
+                    icon={e.icon}
+                    key={index}
+                  />
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
