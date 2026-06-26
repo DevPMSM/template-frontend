@@ -21,6 +21,7 @@ import Image from "next/image";
 import Loading from "../loading";
 import { Label } from "../label";
 import { Input } from "../input";
+import { getImageUrl } from "@/lib/getImageUrl";
 
 export type FormUserProps = {
   user?: userType | null;
@@ -50,6 +51,8 @@ export default function FormUser({
   };
 
   const ROLES: userType["role"][] = ["admin", "user"];
+
+  const userImageUrl = getImageUrl(user?.image ?? "");
 
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -213,7 +216,7 @@ export default function FormUser({
       </Label>
       {previews.length > 0 && (
         <div className="col-span-12 mt-2 flex flex-col items-center gap-2">
-          <div className="relative h-24 w-24">
+          <div className="relative h-30 w-30">
             <a href={previews[0]} target="_blank">
               <Image
                 src={previews[0]}
@@ -229,15 +232,16 @@ export default function FormUser({
 
       {previews.length === 0 && user?.image && (
         <div className="col-span-12 mt-2 flex flex-col items-center gap-2">
-          <a href={user.image} target="_blank">
-            <Image
-              src={user.image}
-              alt="Atual"
-              className="h-24 w-24 rounded-md border-2 border-gray-200 object-cover"
-              width={300}
-              height={300}
+          <a
+            href={userImageUrl}
+            target="_blank"
+            className="text-center"
+          >
+            <img
+              src={userImageUrl}
+              alt={user.name}
+              className="mx-auto h-30 w-30 rounded-md border-2 border-gray-200 object-cover"
             />
-            {user.image}
           </a>
         </div>
       )}
