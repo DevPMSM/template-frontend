@@ -1,14 +1,8 @@
 "use client";
 
 import logoPref from "@public/logo-pref-notext.png";
-import {
-  ChangeEvent,
-  FormEvent,
-  useEffect,
-  useState,
-} from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import { IoChevronBackOutline } from "react-icons/io5";
 import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -20,17 +14,22 @@ import { Input } from "@/components/input";
 import { toast } from "react-toastify";
 
 export default function SignInPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const { login, error } = useAuth();
   const { isAuthenticated } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (
+    e: FormEvent<HTMLFormElement>
+  ) => {
     e.preventDefault();
     setIsLoading(true);
+
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
     await login({
       email,
       password,
@@ -77,34 +76,22 @@ export default function SignInPage() {
               onSubmit={handleSubmit}
               className="w-72rem mb-12 flex flex-col justify-center gap-3 md:gap-6"
             >
-              <Label className="mx-auto flex h-8 w-10/12 items-center gap-2 overflow-hidden rounded-lg border-2 border-[#848484] px-1 md:h-10 md:w-full">
+              <Label className="mx-auto flex h-8 w-10/12 items-center gap-2 overflow-hidden rounded-lg border-2 border-[#848484] bg-white px-1 md:h-10 md:w-full">
                 <TfiEmail className="text-[16px] md:text-[18px]" />
                 <Input
                   type="email"
                   name="email"
                   placeholder="e-mail"
                   className="h-full w-full border-none outline-none"
-                  defaultValue={email}
-                  onChange={(
-                    e: ChangeEvent<HTMLInputElement>
-                  ) => {
-                    setEmail(e.target.value);
-                  }}
                 />
               </Label>
-              <Label className="mx-auto flex h-8 w-10/12 items-center gap-2 overflow-hidden rounded-lg border-2 border-[#848484] px-1 md:h-10 md:w-full">
+              <Label className="mx-auto flex h-8 w-10/12 items-center gap-2 overflow-hidden rounded-lg border-2 border-[#848484] bg-white px-1 md:h-10 md:w-full">
                 <PiKey className="text-[16px] md:text-[18px]" />
                 <Input
                   type="password"
                   name="password"
                   placeholder="senha"
-                  defaultValue={password}
                   className="h-full w-full border-none outline-none"
-                  onChange={(
-                    e: ChangeEvent<HTMLInputElement>
-                  ) => {
-                    setPassword(e.target.value);
-                  }}
                 />
               </Label>
 
