@@ -6,12 +6,11 @@ import { useAuth } from "@/hooks/useAuth";
 import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { TfiEmail } from "react-icons/tfi";
-import { PiKey } from "react-icons/pi";
 import Loading from "@/components/loading";
 import { Label } from "@/components/label";
 import { Input } from "@/components/input";
 import { toast } from "react-toastify";
+import { LuLockKeyhole, LuMail } from "react-icons/lu";
 
 export default function SignInPage() {
   const { login, error } = useAuth();
@@ -77,21 +76,21 @@ export default function SignInPage() {
               className="w-72rem mb-12 flex flex-col justify-center gap-3 md:gap-6"
             >
               <Label className="mx-auto flex h-8 w-10/12 items-center gap-2 overflow-hidden rounded-lg border-2 border-[#848484] bg-white px-1 md:h-10 md:w-full">
-                <TfiEmail className="text-[16px] md:text-[18px]" />
+                <LuMail className="text-[16px] md:text-[22px]" />
                 <Input
                   type="email"
                   name="email"
                   placeholder="e-mail"
-                  className="h-full w-full border-none outline-none"
+                  className="md:text-md h-full w-full border-none outline-none"
                 />
               </Label>
               <Label className="mx-auto flex h-8 w-10/12 items-center gap-2 overflow-hidden rounded-lg border-2 border-[#848484] bg-white px-1 md:h-10 md:w-full">
-                <PiKey className="text-[16px] md:text-[18px]" />
+                <LuLockKeyhole className="text-[16px] md:text-[22px]" />
                 <Input
                   type="password"
                   name="password"
                   placeholder="senha"
-                  className="h-full w-full border-none outline-none"
+                  className="md:text-md h-full w-full border-none outline-none"
                 />
               </Label>
 
