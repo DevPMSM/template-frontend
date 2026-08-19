@@ -34,11 +34,7 @@ export default function CardUser({
           {userProps?.email}
         </div>
         <div className="col-span-5 my-auto line-clamp-2 overflow-x-hidden pl-10 text-lg font-semibold text-slate-600 md:col-span-3">
-          {userProps.role === "user"
-            ? "Usuário"
-            : userProps.role === "admin_global"
-              ? "Admin Global"
-              : "Admin Local"}
+          {userProps.role === "user" ? "Usuário" : "Admin"}
         </div>
       </div>
       <div className="flex gap-1">

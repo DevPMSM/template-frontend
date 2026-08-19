@@ -16,6 +16,8 @@ import {
 } from "react-icons/pi";
 import { TbFilter } from "react-icons/tb";
 import FilterSelect from "@/components/filterSelect";
+import { useAuthStore } from "@/store/authStore";
+import { useAuth } from "@/store/useAuth";
 
 const SORT_OPTIONS_NAMES = [
   { value: "asc", label: "Nome (A - Z)" },
@@ -30,6 +32,7 @@ const SORT_OPTIONS_ROLES = [
 
 export default function Home() {
   const { users, setUsers } = useUsersStore();
+  const { user: loggedUser } = useAuth();
 
   const [userPage, setUserPage] = useState<number>(1);
   const [isShowFilter, setIsShowFilter] =
@@ -195,15 +198,18 @@ export default function Home() {
         <div className="my-2 flex flex-1 flex-col overflow-hidden rounded-sm border-2 border-[#6273a0]">
           <CardUserHeader />
           <div className="flex-1 overflow-y-auto px-0.5">
-            {users.map((userProps, key) => (
-              <CardUser
-                key={key}
-                userProps={userProps}
-                className={
-                  key % 2 === 0 ? "bg-[#e5ecff]/70" : ""
-                }
-              />
-            ))}
+            {users.map(
+              (userProps, key) =>
+                userProps.id !== loggedUser?.id && (
+                  <CardUser
+                    key={key}
+                    userProps={userProps}
+                    className={
+                      key % 2 === 0 ? "bg-[#e5ecff]/70" : ""
+                    }
+                  />
+                )
+            )}
           </div>
         </div>
 
