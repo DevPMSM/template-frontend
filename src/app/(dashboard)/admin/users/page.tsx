@@ -1,45 +1,88 @@
 "use client";
 
-import Card from "@/components/card";
 import Pagination from "@/components/pagination";
+import CardUser from "@/components/user/cardUser";
+import CardUserHeader from "@/components/user/cardUserHeader";
 import DialogUserCreate from "@/components/user/dialogs/dialogUserCreate";
-import DialogUserDelete from "@/components/user/dialogs/dialogUserDelete";
-import DialogUserInformation from "@/components/user/dialogs/dialogUserInformation";
-import DialogUserUpdate from "@/components/user/dialogs/dialogUserUpdate";
-import { useAuth } from "@/hooks/useAuth";
-import { isServerSide } from "@/lib/is-server-side";
 import baseApi from "@/services/api";
 import { useUsersStore } from "@/store/useUser";
 import { paginationResponseType } from "@/types/pagination-response";
 import { userType } from "@/types/user";
 import { useEffect, useState } from "react";
-import { FaRegTrashCan } from "react-icons/fa6";
-import { IoEyeOutline } from "react-icons/io5";
+import { LuSearch, LuSendHorizontal } from "react-icons/lu";
 import {
   PiUserCirclePlus,
   PiUserLight,
 } from "react-icons/pi";
 import { TbFilter } from "react-icons/tb";
-import { TiPencil } from "react-icons/ti";
+import FilterSelect from "@/components/filterSelect";
+
+const SORT_OPTIONS_NAMES = [
+  { value: "asc", label: "Nome (A - Z)" },
+  { value: "desc", label: "Nome (Z - A)" },
+];
+
+const SORT_OPTIONS_ROLES = [
+  { value: " ", label: "Todos" },
+  { value: "admin", label: "Admin" },
+  { value: "user", label: "Usuário" },
+];
 
 export default function Home() {
   const { users, setUsers } = useUsersStore();
-  const { user: userLogged } = useAuth();
 
   const [userPage, setUserPage] = useState<number>(1);
+  const [isShowFilter, setIsShowFilter] =
+    useState<boolean>(false);
 
-  // Paginação
   const PER_PAGE = 30;
   const [lastPage, setLastPage] = useState<number>(1);
   const [isLoading, setIsLoading] =
     useState<boolean>(false);
 
+  const [searchInput, setSearchInput] =
+    useState<string>("");
+  const [searchName, setSearchName] = useState<string>("");
+
+  const [sortOrder, setSortOrder] = useState<string>("asc");
+  const [roleFilter, setRoleFilter] = useState<string>(" ");
+
+  const handleSearch = () => {
+    setSearchName(searchInput);
+    setUserPage(1);
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = e.target.value;
+    setSearchInput(value);
+
+    if (value.trim() === "") {
+      setSearchName("");
+      setUserPage(1);
+    }
+  };
+
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   useEffect(() => {
     setIsLoading(true);
+
+    const url = `/users?name=${encodeURIComponent(searchName)}
+          &sort=${sortOrder}
+          &role=${roleFilter}
+          &page=${userPage}
+          &per_page=${PER_PAGE}`;
+
     baseApi
-      .get<paginationResponseType<userType[]>>(
-        `/users?page=${userPage}&per_page=${PER_PAGE}`
-      )
+      .get<paginationResponseType<userType[]>>(url)
       .then((res) => {
         setUsers(res.data.data);
         setLastPage(res.data.last_page);
@@ -50,11 +93,16 @@ export default function Home() {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [userPage, setUsers]);
+  }, [
+    userPage,
+    searchName,
+    sortOrder,
+    roleFilter,
+    setUsers,
+  ]);
 
   return (
     <div className="mx-auto flex h-full w-11/12 flex-col items-center overflow-hidden md:w-full md:max-w-7xl md:p-4 md:pr-7">
-      {" "}
       <div className="flex w-full flex-col items-center max-md:mt-6 max-md:justify-center md:flex-row md:gap-2">
         <PiUserLight
           size={34}
@@ -64,69 +112,101 @@ export default function Home() {
           <h2 className="text-xl leading-3 font-semibold md:text-2xl">
             Usuários
           </h2>
-          <p className="text-sm font-medium">
+          <p className="mt-1 text-sm font-medium">
             Cadastre, edite, visualize e exclua usuários.
           </p>
         </div>
       </div>
+
       <div className="flex w-full flex-1 flex-col overflow-hidden">
-        <div className="mt-4 flex h-10 w-full items-center justify-between rounded-sm bg-[#223463] px-3">
-          <TbFilter
-            className="cursor-pointer text-white transition-all duration-200 hover:scale-90"
-            size={22}
-          />
-          <DialogUserCreate title="Criar Usuário">
-            <PiUserCirclePlus
-              className="cursor-pointer text-white transition-all duration-200 hover:scale-90"
-              size={26}
+        <div
+          className={`mt-4 flex h-12 w-full items-center justify-between bg-[#223463] px-3 ${
+            isShowFilter ? "rounded-t-sm" : "rounded-sm"
+          } transition-all duration-50`}
+        >
+          <div className="flex h-8 items-center gap-2 rounded-sm bg-[#3c4f80] px-2 md:w-4/12">
+            <LuSearch
+              size={22}
+              className="text-slate-200"
             />
-          </DialogUserCreate>
+            <input
+              type="text"
+              value={searchInput}
+              onChange={handleInputChange}
+              onKeyDown={handleKeyDown}
+              className="w-full text-white placeholder:text-slate-300 focus:outline-0"
+              placeholder="Pesquise o nome do usuário"
+              maxLength={255}
+            />
+            <LuSendHorizontal
+              size={20}
+              onClick={handleSearch}
+              className="cursor-pointer text-slate-200 transition-all duration-100 hover:text-slate-400"
+            />
+          </div>
+
+          <div className="flex items-center gap-2 md:gap-10">
+            <div
+              className="flex cursor-pointer items-center gap-1 rounded-sm p-1 hover:bg-[#3c4f80]"
+              onClick={() => {
+                setIsShowFilter(!isShowFilter);
+              }}
+            >
+              <TbFilter
+                className="text-slate-200"
+                size={24}
+              />
+              <p className="my-auto hidden font-semibold text-slate-200 uppercase md:block">
+                Filtros
+              </p>
+            </div>
+            <DialogUserCreate title="Criar Usuário">
+              <PiUserCirclePlus
+                className="cursor-pointer text-white transition-all duration-200 hover:scale-90"
+                size={26}
+              />
+            </DialogUserCreate>
+          </div>
         </div>
-        <div className="my-2 flex-1 overflow-y-auto rounded-sm border-2 border-[#6273a0] px-0.5">
-          {users.map((user, key) => {
-            if (user.id !== userLogged?.id) {
-              return (
-                <Card
-                  key={user.id}
-                  className={`${key % 2 === 0 ? "bg-[#e5ecff]/70" : ""}`}
-                  columnValues={[user.name, user.email]}
-                  dialogInformation={
-                    <DialogUserInformation
-                      title="Usuário"
-                      user={user}
-                    >
-                      <IoEyeOutline
-                        className="cursor-pointer rounded-full bg-[#639855] p-0.5 text-white transition-all duration-200 hover:scale-90"
-                        size={24}
-                      />
-                    </DialogUserInformation>
-                  }
-                  dialogUpdate={
-                    <DialogUserUpdate
-                      title="Usuário"
-                      user={user}
-                    >
-                      <TiPencil
-                        className="cursor-pointer rounded-full bg-blue-600 p-0.5 transition-all duration-200 hover:scale-90"
-                        size={24}
-                        fill="white"
-                      />
-                    </DialogUserUpdate>
-                  }
-                  dialogDelete={
-                    <DialogUserDelete user={user}>
-                      <FaRegTrashCan
-                        className="bg-destructive cursor-pointer rounded-full p-0.75 transition-all duration-200 hover:scale-90"
-                        size={24}
-                        fill="white"
-                      />
-                    </DialogUserDelete>
-                  }
-                />
-              );
-            }
-          })}
+
+        {isShowFilter && (
+          <div className="flex flex-wrap items-center gap-4 rounded-b-sm border border-t-0 border-[#223463] bg-slate-50 p-3 max-sm:justify-center">
+            <FilterSelect
+              label="Ordenar nome"
+              options={SORT_OPTIONS_NAMES}
+              value={sortOrder}
+              onChange={(val) => {
+                setSortOrder(val);
+                setUserPage(1);
+              }}
+            />
+            <FilterSelect
+              label="Cargo"
+              options={SORT_OPTIONS_ROLES}
+              value={roleFilter}
+              onChange={(val) => {
+                setRoleFilter(val);
+                setUserPage(1);
+              }}
+            />
+          </div>
+        )}
+
+        <div className="my-2 flex flex-1 flex-col overflow-hidden rounded-sm border-2 border-[#6273a0]">
+          <CardUserHeader />
+          <div className="flex-1 overflow-y-auto px-0.5">
+            {users.map((userProps, key) => (
+              <CardUser
+                key={key}
+                userProps={userProps}
+                className={
+                  key % 2 === 0 ? "bg-[#e5ecff]/70" : ""
+                }
+              />
+            ))}
+          </div>
         </div>
+
         <Pagination
           currentPage={userPage}
           lastPage={lastPage}

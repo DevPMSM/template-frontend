@@ -4,24 +4,13 @@ import {
   useRef,
   useState,
 } from "react";
-import { formatPhoneNumber } from "@/utils/formatter";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { userType } from "@/types/user";
 import { Button } from "@/components/button";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/select";
-import { useAuth } from "@/hooks/useAuth";
-import Image from "next/image";
 import Loading from "../loading";
 import { Label } from "../label";
 import { Input } from "../input";
-import { getImageUrl } from "@/lib/getImageUrl";
+import Select from "../select";
 
 export type FormUserProps = {
   user?: userType | null;
@@ -35,41 +24,22 @@ export default function FormUser({
   readOnly = false,
 }: FormUserProps) {
   const [previews, setPreviews] = useState<string[]>([]);
-  const [contact, setContact] = useState<string>(
-    user?.contact ?? ""
-  );
+
   const [isLoading, setIsLoading] =
     useState<boolean>(false);
-  const { user: loggedUser } = useAuth();
   const inputPasswordRef = useRef<HTMLInputElement | null>(
     null
   );
   const [showPassword, setShowPassword] = useState(false);
+  const [role, setRole] = useState<string | null>(
+    user?.role ?? null
+  );
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
 
-  const ROLES: userType["role"][] = ["admin", "user"];
-
-  const userImageUrl = getImageUrl(user?.image ?? "");
-
-  const handleFileChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const files = e.target.files;
-    if (files && files.length > 0) {
-      const fileArray = Array.from(files);
-
-      const newPreviews = fileArray.map((file) =>
-        URL.createObjectURL(file)
-      );
-
-      previews.forEach((url) => URL.revokeObjectURL(url));
-
-      setPreviews(newPreviews);
-    }
-  };
+  const ROLES: userType["role"][] = ["user", "admin"];
 
   useEffect(() => {
     return () => {
@@ -121,50 +91,23 @@ export default function FormUser({
       </Label>
 
       <Label
-        title={`Contato${!user ? "*" : ""}`}
-        className="col-span-12 md:col-span-6"
-      >
-        <Input
-          type="text"
-          name="contact"
-          placeholder="Contato do usuário"
-          className="text-center duration-100 hover:border-[#4c65ac]"
-          readOnly={readOnly}
-          disabled={readOnly}
-          value={contact}
-          required
-          onChange={(e) =>
-            setContact(formatPhoneNumber(e.target.value))
-          }
-        />
-      </Label>
-
-      <Label
         title={`Nível de Usuário${!user ? "*" : ""}`}
-        className="col-span-12 md:col-span-6"
+        className="col-span-12"
       >
         <Select
-          defaultValue={user?.role}
-          disabled={readOnly || user?.id === loggedUser?.id}
+          options={ROLES.map((role) => ({
+            value: role,
+            label: role === "user" ? "Usuário" : "Admin",
+          }))}
+          value={role}
           name="role"
-          required
-        >
-          <SelectTrigger className="box-border w-full border border-[#D2D2D2] py-1 duration-100 hover:border-[#4c65ac] focus:border focus:border-[#639855]">
-            <SelectValue placeholder="Selecione o nível" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              {ROLES.map((role, key) => {
-                return (
-                  <SelectItem key={key} value={role}>
-                    {role.charAt(0).toUpperCase() +
-                      role.slice(1)}
-                  </SelectItem>
-                );
-              })}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+          clearable={false}
+          onChange={setRole}
+          disabled={readOnly}
+          classNames={{
+            trigger: "min-h-8 text-center",
+          }}
+        />
       </Label>
 
       <Label
@@ -201,50 +144,6 @@ export default function FormUser({
         </div>
       </Label>
 
-      <Label
-        title="Imagem de Perfil"
-        className="col-span-12"
-      >
-        <Input
-          type="file"
-          name="image"
-          accept="image/*"
-          disabled={readOnly}
-          className="text-center duration-100 hover:border-[#4c65ac]"
-          onChange={handleFileChange}
-        />
-      </Label>
-      {previews.length > 0 && (
-        <div className="col-span-12 mt-2 flex flex-col items-center gap-2">
-          <div className="relative h-30 w-30">
-            <a href={previews[0]} target="_blank">
-              <Image
-                src={previews[0]}
-                alt="Preview"
-                className="h-full w-full rounded-md border-2 border-[#639855] object-cover shadow-sm"
-                width={300}
-                height={300}
-              />
-            </a>
-          </div>
-        </div>
-      )}
-
-      {previews.length === 0 && user?.image && (
-        <div className="col-span-12 mt-2 flex flex-col items-center gap-2">
-          <a
-            href={userImageUrl}
-            target="_blank"
-            className="text-center"
-          >
-            <img
-              src={userImageUrl}
-              alt={user.name}
-              className="mx-auto h-30 w-30 rounded-md border-2 border-gray-200 object-cover"
-            />
-          </a>
-        </div>
-      )}
       {!isLoading ? (
         <Button
           type="submit"

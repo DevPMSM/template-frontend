@@ -24,18 +24,11 @@ export default function DialogUserCreate({
   const { addUser } = useUsersStore();
   const [open, setOpen] = useState<boolean>();
 
-  function handleSubmit(
-    e: FormEvent<HTMLFormElement>,
-    profileImage: File | null
-  ) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(
       e.currentTarget as HTMLFormElement
     );
-
-    if (profileImage) {
-      formData.append("image", profileImage);
-    }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     createUser(formData, token ?? "").then((user: any) => {
@@ -59,7 +52,7 @@ export default function DialogUserCreate({
           {title}
         </DialogTitle>
         <div className="flex flex-col items-center justify-center px-2">
-          <FormUser handleSubmit={() => handleSubmit} />
+          <FormUser handleSubmit={(e) => handleSubmit(e)} />
         </div>
       </DialogContent>
     </Dialog.Root>

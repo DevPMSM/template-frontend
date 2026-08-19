@@ -22,31 +22,23 @@ export default function CardUser({
   return (
     <div
       className={cn(
-        "my-2 flex items-center justify-between rounded-xl border bg-[#F6F6F6] p-2 text-xs duration-50 md:h-14 md:hover:scale-[1.005]",
+        "my-2 flex items-center justify-between p-2 text-xs duration-50 md:h-14",
         className
       )}
     >
-      <div className="flex flex-col md:hidden">
-        <p className="mb-0.5 font-semibold text-[#696767]">
-          {userProps.name}
-        </p>
-        <p className="text-[#828282] capitalize">
-          {userProps.role}
-        </p>
-      </div>
-      <div className="grid w-full grid-cols-12 gap-1 max-md:hidden">
-        <div className="col-span-3 my-auto ml-8 line-clamp-2 overflow-x-hidden text-[13px] font-semibold text-ellipsis text-[#696767]">
+      <div className="grid w-full grid-cols-12 items-center gap-1">
+        <div className="col-span-6 my-auto ml-8 line-clamp-2 overflow-x-hidden text-lg font-semibold text-ellipsis md:col-span-3">
           {userProps?.name}
         </div>
-        <div className="col-span-2 my-auto line-clamp-1 overflow-x-hidden text-[13px] font-semibold text-ellipsis text-[#696767]">
-          {userProps?.contact}
-        </div>
-        <div className="col-span-4 my-auto ml-7 line-clamp-1 overflow-x-hidden text-left text-[13px] font-semibold text-ellipsis text-[#696767]">
+        <div className="col-span-5 my-auto ml-7 line-clamp-2 overflow-x-hidden text-left text-lg font-semibold wrap-break-word text-slate-600 max-md:hidden">
           {userProps?.email}
         </div>
-        <div className="col-span-3 my-auto line-clamp-1 overflow-x-hidden pl-10 text-[13px] font-semibold text-ellipsis text-[#696767]">
-          {userProps.role.charAt(0).toUpperCase() +
-            userProps.role.slice(1)}
+        <div className="col-span-5 my-auto line-clamp-2 overflow-x-hidden pl-10 text-lg font-semibold text-slate-600 md:col-span-3">
+          {userProps.role === "user"
+            ? "Usuário"
+            : userProps.role === "admin_global"
+              ? "Admin Global"
+              : "Admin Local"}
         </div>
       </div>
       <div className="flex gap-1">
