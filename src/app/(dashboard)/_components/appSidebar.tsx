@@ -8,25 +8,26 @@ import {
   SidebarMenuButton,
 } from "@/components/sidebar";
 import { useAuth } from "@/hooks/useAuth";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "../avatar";
 import { usePathname } from "next/dist/client/components/navigation";
 import Image from "next/image";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../popover";
-import DialogUserUpdate from "../user/dialogs/dialogUserUpdate";
+
 import { TbUserEdit } from "react-icons/tb";
 import { IoMdLogOut } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
 import { cn } from "@/lib/utils";
 import { PiUserLight } from "react-icons/pi";
 import { IconType } from "react-icons";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/avatar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/popover";
+import DialogUserUpdate from "./user/dialogs/dialogUserUpdate";
 
 type AppSidebarButtonProps = {
   name: string;

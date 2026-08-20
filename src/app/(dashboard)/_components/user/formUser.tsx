@@ -7,10 +7,10 @@ import {
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { userType } from "@/types/user";
 import { Button } from "@/components/button";
-import Loading from "../loading";
-import { Label } from "../label";
-import { Input } from "../input";
-import Select from "../select";
+import { Label } from "@/components/label";
+import { Input } from "@/components/input";
+import Select from "@/components/select";
+import Loading from "@/components/loading";
 
 export type FormUserProps = {
   user?: userType | null;

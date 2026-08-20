@@ -1,9 +1,6 @@
 "use client";
 
 import Pagination from "@/components/pagination";
-import CardUser from "@/components/user/cardUser";
-import CardUserHeader from "@/components/user/cardUserHeader";
-import DialogUserCreate from "@/components/user/dialogs/dialogUserCreate";
 import baseApi from "@/services/api";
 import { useUsersStore } from "@/store/useUser";
 import { paginationResponseType } from "@/types/pagination-response";
@@ -16,8 +13,11 @@ import {
 } from "react-icons/pi";
 import { TbFilter } from "react-icons/tb";
 import FilterSelect from "@/components/filterSelect";
-import { useAuthStore } from "@/store/authStore";
 import { useAuth } from "@/store/useAuth";
+import ListSkeleton from "@/app/(dashboard)/_components/listSkeleton";
+import DialogUserCreate from "../../_components/user/dialogs/dialogUserCreate";
+import CardUserHeader from "../../_components/user/cardUserHeader";
+import CardUser from "../../_components/user/cardUser";
 
 const SORT_OPTIONS_NAMES = [
   { value: "asc", label: "Nome (A - Z)" },
@@ -196,21 +196,33 @@ export default function Home() {
         )}
 
         <div className="my-2 flex flex-1 flex-col overflow-hidden rounded-sm border-2 border-[#6273a0]">
-          <CardUserHeader />
-          <div className="flex-1 overflow-y-auto px-0.5">
-            {users.map(
-              (userProps, key) =>
-                userProps.id !== loggedUser?.id && (
-                  <CardUser
-                    key={key}
-                    userProps={userProps}
-                    className={
-                      key % 2 === 0 ? "bg-[#e5ecff]/70" : ""
-                    }
-                  />
-                )
-            )}
-          </div>
+          <CardUserHeader className="max-md:hidden" />
+          {isLoading ? (
+            <ListSkeleton rows={PER_PAGE} />
+          ) : users.length === 0 ||
+            (users.length === 1 &&
+              users[0].id === loggedUser?.id) ? (
+            <div className="flex h-full items-center justify-center text-lg font-semibold text-gray-500">
+              Nenhum usuário encontrado.
+            </div>
+          ) : (
+            <div className="flex-1 overflow-y-auto px-0.5">
+              {users.map(
+                (userProps, key) =>
+                  userProps.id !== loggedUser?.id && (
+                    <CardUser
+                      key={key}
+                      userProps={userProps}
+                      className={
+                        key % 2 === 0
+                          ? "bg-[#e5ecff]/70"
+                          : ""
+                      }
+                    />
+                  )
+              )}
+            </div>
+          )}
         </div>
 
         <Pagination

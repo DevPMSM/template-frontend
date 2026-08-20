@@ -4,16 +4,16 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/sidebar";
-import { AppSidebar } from "@/components/dashboard/appSidebar"; // O componente da sua sidebar
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "../avatar";
+} from "../../../components/avatar";
 import { useAuth } from "@/hooks/useAuth";
 import { FaCircleUser } from "react-icons/fa6";
 import { CgMoreVertical } from "react-icons/cg";
 import { usePathname } from "next/navigation";
+import { AppSidebar } from "./appSidebar";
 
 export default function Layout() {
   const { user } = useAuth();

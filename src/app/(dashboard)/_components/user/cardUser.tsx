@@ -43,7 +43,7 @@ export default function CardUser({
           user={userProps}
         >
           <FaRegEye
-            size={19}
+            size={22}
             color="#FFFFFF"
             className="cursor-pointer rounded-sm bg-[#639855] p-0.5"
           />
@@ -53,7 +53,7 @@ export default function CardUser({
           user={userProps}
         >
           <MdModeEditOutline
-            size={19}
+            size={22}
             color="#FFFFFF"
             className="cursor-pointer rounded-sm bg-[#2857CD] p-0.5"
           />
@@ -61,7 +61,7 @@ export default function CardUser({
         {user?.id !== userProps.id ? (
           <DialogUserDelete user={userProps}>
             <IoCloseSharp
-              size={19}
+              size={22}
               color="#FFFFFF"
               className="cursor-pointer rounded-sm bg-[#CA080B] p-0.5"
             />

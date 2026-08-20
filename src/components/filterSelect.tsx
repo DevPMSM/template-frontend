@@ -36,7 +36,8 @@ export default function FilterSelect({
         value={value}
         onChange={(val) => onChange(val ?? "")}
         classNames={{
-          trigger: "h-9 text-sm bg-white",
+          trigger: "h-9 text-sm bg-white font-semibold",
+          option: "font-medium text-nunito",
         }}
       />
     </Label>

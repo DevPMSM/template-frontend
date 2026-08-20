@@ -1,7 +1,7 @@
 "use client";
 
 import AuthRoute from "@/components/authRoute";
-import Sidebar from "@/components/dashboard/sidebar";
+import Sidebar from "@/app/(dashboard)/_components/sidebar";
 
 export default function AuthLayout({
   children,
