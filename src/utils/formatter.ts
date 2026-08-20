@@ -18,6 +18,21 @@ export const formatPhoneNumber = (
   return value.substring(0, 15);
 };
 
+export function formatCPF(value: string): string {
+  if (!value) return "";
+  return value
+    .replace(/\D/g, "")
+    .replace(/(\d{3})(\d)/, "$1.$2")
+    .replace(/(\d{3})(\d)/, "$1.$2")
+    .replace(/(\d{3})(\d{1,2})/, "$1-$2")
+    .replace(/(-\d{2})\d+?$/, "$1");
+}
+
+export function cleanCPF(value: string): string {
+  if (!value) return "";
+  return value.replace(/\D/g, "");
+}
+
 export const passwordsMatch = (
   password: string,
   confirmation: string
