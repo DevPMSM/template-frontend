@@ -13,21 +13,28 @@ import Image from "next/image";
 
 import { TbUserEdit } from "react-icons/tb";
 import { IoMdLogOut } from "react-icons/io";
+import { MdCalendarMonth } from "react-icons/md";
 import { IoSettingsOutline } from "react-icons/io5";
 import { cn } from "@/lib/utils";
-import { PiUserLight } from "react-icons/pi";
 import { IconType } from "react-icons";
+import Link from "next/link";
 import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/avatar";
+  LuMapPinned,
+  LuHospital,
+  LuUserRound,
+  LuSyringe,
+} from "react-icons/lu";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/popover";
 import DialogUserUpdate from "./user/dialogs/dialogUserUpdate";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/avatar";
 
 type AppSidebarButtonProps = {
   name: string;
@@ -45,7 +52,7 @@ function AppSidebarButton({
 
   return (
     <SidebarMenuButton asChild>
-      <a
+      <Link
         href={url}
         className={cn(
           "group font-nunito my-0.5 flex h-11 px-2 text-[19px] font-medium text-white/20 transition-transform duration-200 hover:border hover:border-white/10 hover:bg-transparent hover:bg-linear-to-l hover:from-[#3147af] hover:to-[#3b53b6] hover:font-bold",
@@ -62,7 +69,7 @@ function AppSidebarButton({
           <Icon className="h-5! w-5! text-white" />
           {name}
         </span>
-      </a>
+      </Link>
     </SidebarMenuButton>
   );
 }
@@ -74,7 +81,7 @@ export function AppSidebar() {
     {
       name: "Usuários",
       url: "/admin/users",
-      icon: PiUserLight,
+      icon: LuUserRound,
     },
   ];
 
@@ -82,22 +89,23 @@ export function AppSidebar() {
     <Sidebar className="w-75 border-none">
       <SidebarContent className="bg-linear-to-r from-[#3B5394] to-[#203670]">
         <SidebarHeader className="rounded-sm px-2 py-3">
-          <div className="flex items-center justify-center gap-3 px-2 md:mt-6">
-            {/* Logo do sistema que estiver em desenvolvimento */}
+          <Link
+            href={"/"}
+            className="flex flex-col items-center justify-center gap-3 px-2 md:mt-6"
+          >
             <Image
               src="/logo-pref-notext.png"
               alt="Logo"
-              width={50}
-              height={50}
+              width={55}
+              height={60}
             />
 
-            {/* Nome do sistema */}
             <div>
-              <p className="font-nunito line-clamp-1 w-full text-start text-lg leading-4 font-bold text-white">
-                TEMPLATE SECTI
+              <p className="font-nunito line-clamp-1 w-full text-start text-2xl leading-8 font-bold text-white">
+                Template Secti
               </p>
             </div>
-          </div>
+          </Link>
         </SidebarHeader>
         <SidebarGroup className="no-scrollbar h-full overflow-y-scroll">
           <SidebarGroupContent className="my-2 pb-4">
@@ -108,16 +116,20 @@ export function AppSidebar() {
               <div className="mt-1 w-full border-t"></div>
             </div>
             <SidebarMenu className="mt-4">
-              {routes.map((e, index) => {
-                return (
-                  <AppSidebarButton
-                    name={e.name}
-                    url={e.url}
-                    icon={e.icon}
-                    key={index}
-                  />
-                );
-              })}
+              {[...routes]
+                .sort((a, b) =>
+                  a.name.localeCompare(b.name, "pt-BR")
+                )
+                .map((e, index) => {
+                  return (
+                    <AppSidebarButton
+                      name={e.name}
+                      url={e.url}
+                      icon={e.icon}
+                      key={e.url || index}
+                    />
+                  );
+                })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

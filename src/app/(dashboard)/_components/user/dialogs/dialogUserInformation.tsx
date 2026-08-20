@@ -23,7 +23,7 @@ export default function DialogUserInformation({
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger>{children}</Dialog.Trigger>
-      <DialogContent className="font-nunito px-0 md:max-w-sm">
+      <DialogContent className="font-nunito px-0 md:max-w-md">
         <DialogTitle className="border-b pb-4.25 text-center text-xl md:text-[40px]">
           {title}
         </DialogTitle>

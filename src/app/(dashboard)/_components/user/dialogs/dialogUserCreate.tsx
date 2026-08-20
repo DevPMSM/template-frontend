@@ -47,7 +47,7 @@ export default function DialogUserCreate({
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger>{children}</Dialog.Trigger>
-      <DialogContent className="font-nunito max-w-sm px-0">
+      <DialogContent className="font-nunito max-w-md px-0">
         <DialogTitle className="border-b pb-4.25 text-center text-2xl md:text-[40px]">
           {title}
         </DialogTitle>
