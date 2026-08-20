@@ -56,14 +56,15 @@ export default function DialogUserDelete({
           <div className="flex justify-center gap-6">
             <Button
               onClick={() => handleDelete()}
-              className="cursor-pointer bg-[#3b5394] font-bold hover:bg-[#3b5394]/90"
+              variant={"destructive"}
+              className="cursor-pointer font-bold"
             >
               Confirmar
             </Button>
             <Button
               onClick={() => setOpen(false)}
-              variant={"destructive"}
-              className="cursor-pointer font-bold"
+              variant={"default"}
+              className="cursor-pointer bg-[#3b5394] font-bold hover:bg-[#3b5394]/90"
             >
               Cancelar
             </Button>
