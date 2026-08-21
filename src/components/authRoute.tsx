@@ -84,7 +84,7 @@ export default function AuthRoute({
 
       if (!authValid) {
         if (redirectUnauthenticated) {
-          router.push("/");
+          router.push("/auth/sign-in");
         }
         if (active) setLoading(false);
         return;
@@ -95,7 +95,7 @@ export default function AuthRoute({
 
       if (!tokenValid) {
         if (redirectUnauthenticated) {
-          router.push("/");
+          router.push("/auth/sign-in");
         }
         if (active) setLoading(false);
         return;

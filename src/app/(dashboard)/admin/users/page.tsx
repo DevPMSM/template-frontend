@@ -37,7 +37,7 @@ export default function Home() {
   const [userPage, setUserPage] = useState<number>(1);
   const [isShowFilter, setIsShowFilter] =
     useState<boolean>(false);
-
+  
   const PER_PAGE = 30;
   const [lastPage, setLastPage] = useState<number>(1);
   const [isLoading, setIsLoading] =
@@ -87,7 +87,11 @@ export default function Home() {
     baseApi
       .get<paginationResponseType<userType[]>>(url)
       .then((res) => {
-        setUsers(res.data.data);
+        setUsers(
+          res.data.data.filter(
+            (n) => n.id !== loggedUser?.id
+          )
+        );
         setLastPage(res.data.last_page);
       })
       .catch((err) => {
